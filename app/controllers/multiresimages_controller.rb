@@ -23,12 +23,12 @@ class MultiresimagesController < ApplicationController
  
    # Get Aware's HTML view of the image for screen scraping geometry
   def aware_details
- 	  @aware_details_url = "http://www.example.com/path";
+    @aware_details_url = "http://ansel.library.northwestern.edu/ImageServer/imageInfo.jsp?filename=/dimages/public/images/" + params[:file_path]
   end
 
   # Get tile from Aware
   def aware_tile
-    tile_url = "http://www.example.com/path"
+    tile_url = "http://ansel.library.northwestern.edu/ImageServer/tileServer?filename=/dimages/public/images/" + params[:file_path] + "&zoom=" + params[:level] + "&x=" + params[:x] + "&y=" + params[:y] + "&rotation=0"  
     send_data Net::HTTP.get_response(URI.parse(tile_url)).body, :type => 'image/jpeg', :disposition => 'inline'
   end
    
