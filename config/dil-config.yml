@@ -1,5 +1,6 @@
 defaults: &defaults
   dil_aware_url: http://ansel.library.northwestern.edu/ImageServer/imageInfo.jsp?filename=/dimages/public/images/
+  dil_fedora_disseminator: /inu:sdef-image/getWithLongSide?length=
   dil_fedora_disseminator_thumbnail: /inu:sdef-image/getWithLongSide?length=100
   dil_fedora_disseminator_collection: /inu:sdef-image/getWithLongSide?length=120
   dil_fedora_disseminator_ppt: /inu:sdef-image/getWithLongSide?length=500
@@ -25,5 +26,5 @@ production:
    dil_fedora_base_ip: repository.library.northwestern.edu
    dil_fedora_port: 80
    dil_fedora_url: http://repository.library.northwestern.edu/fedora/get/
-   dil_app_url: http://localhost/
+   dil_app_url: http://emo.library.northwestern.edu/
    
