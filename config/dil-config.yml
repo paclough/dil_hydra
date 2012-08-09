@@ -1,5 +1,6 @@
 defaults: &defaults
-  dil_aware_url: http://ansel.library.northwestern.edu/ImageServer/imageInfo.jsp?filename=/dimages/public/images/
+  dil_aware_detail_url: http://ansel.library.northwestern.edu/ImageServer/imageInfo.jsp?filename=/dimages/public/images/
+  dil_aware_tile_url: http://ansel.library.northwestern.edu/ImageServer/tileServer?filename=/dimages/public/images/
   dil_fedora_disseminator: /inu:sdef-image/getWithLongSide?length=
   dil_fedora_disseminator_thumbnail: /inu:sdef-image/getWithLongSide?length=100
   dil_fedora_disseminator_collection: /inu:sdef-image/getWithLongSide?length=120
