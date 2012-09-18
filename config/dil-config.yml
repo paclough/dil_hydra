@@ -7,6 +7,8 @@ defaults: &defaults
   dil_fedora_disseminator_ppt: /inu:sdef-image/getWithLongSide?length=500
   dil_ppt_cgi_url: http://gandalf.library.northwestern.edu/cgi-bin/hydra/hydra-export-ppt-jms.cgi
   dil_upload_cgi_url: http://gandalf.library.northwestern.edu/cgi-bin/hydra/hydra-jms.cgi
+  dil_uploads_collection: My Uploads
+  dil_details_collection: My Details
   
 development:  
    <<: *defaults
