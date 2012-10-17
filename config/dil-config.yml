@@ -23,6 +23,8 @@ test:
    dil_fedora_port: 8983
    dil_fedora_url: http://localhost:8983/fedora-test/get/
    dil_app_url: https://localhost:3000/
+   dil_ppt_cgi_url: http://gandalf.library.northwestern.edu/cgi-bin/hydra/hydra-export-ppt-jms-test.cgi
+   dil_upload_cgi_url: http://gandalf.library.northwestern.edu/cgi-bin/hydra/hydra-upload-test.cgi
 
 staging:  
    <<: *defaults
