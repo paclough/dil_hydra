@@ -21,6 +21,13 @@ test:
    <<: *defaults
    dil_fedora_base_ip: 127.0.0.1
    dil_fedora_port: 8983
+   dil_fedora_url: http://localhost:8983/fedora-test/get/
+   dil_app_url: https://localhost:3000/
+
+staging:  
+   <<: *defaults
+   dil_fedora_base_ip: 127.0.0.1
+   dil_fedora_port: 8983
    dil_fedora_url: http://cecil.library.northwestern.edu:8983/fedora/get/
    dil_app_url: http://cecil.library.northwestern.edu:3000/
 
