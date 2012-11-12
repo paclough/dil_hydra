@@ -8,6 +8,16 @@ defaults: &defaults
   dil_uploads_collection: My Uploads
   dil_details_collection: My Details
   
+  admin_staff:
+  - mcs680
+  - ega505
+  - dzellner
+  - ngf811
+  - sbe484
+  - jdb246
+  - cfc478
+  - steve
+  
 development:  
    <<: *defaults
    dil_fedora_base_ip: 127.0.0.1
