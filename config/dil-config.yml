@@ -6,7 +6,7 @@ defaults: &defaults
   dil_fedora_disseminator_collection: /inu:sdef-image/getWithLongSide?length=120
   dil_fedora_disseminator_ppt: /inu:sdef-image/getWithLongSide?length=500
   dil_uploads_collection: My Uploads
-  dil_details_collection: My Details
+  dil_details_collection: My Image Details
   
   admin_staff:
   - mcs680
