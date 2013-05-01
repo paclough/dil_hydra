@@ -4,7 +4,7 @@ defaults: &defaults
   dil_fedora_disseminator: /inu:sdef-image/getWithLongSide?length=
   dil_fedora_disseminator_thumbnail: /inu:sdef-image/getWithLongSide?length=100
   dil_fedora_disseminator_collection: /inu:sdef-image/getWithLongSide?length=120
-  dil_fedora_disseminator_ppt: /inu:sdef-image/getWithLongSide?length=500
+  dil_fedora_disseminator_ppt: /inu:sdef-image/getWithLongSide?length=
   dil_uploads_collection: My Uploads
   dil_details_collection: My Image Details
   
