@@ -13,11 +13,13 @@ defaults: &defaults
   - ega505
   - dzellner
   - ngf811
-  - sbe484
   - jdb246
   - cfc478
   - steve
   
+  uploaders:
+  - steve
+
 development:  
    <<: *defaults
    dil_fedora_base_ip: 127.0.0.1
