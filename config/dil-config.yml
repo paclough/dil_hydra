@@ -16,9 +16,96 @@ defaults: &defaults
   - jdb246
   - cfc478
   - steve
-  
+  - toc171
+  - skm170  
+
   uploaders:
-  - steve
+  - aab509
+  - acg187
+  - amr527
+  - arh001
+  - bfort
+  - bmq449
+  - bpj152
+  - brb384
+  - cab052
+  - cac457
+  - cbl198
+  - cdg010
+  - cfc478
+  - chr447
+  - cjsmith
+  - cka872
+  - ckb393
+  - csw386
+  - cvo804
+  - dac576
+  - dgarrisn
+  - dnp421
+  - dtvz
+  - eab207
+  - eab411
+  - ecb467
+  - efo864
+  - eic992
+  - eme052
+  - fran
+  - frg946
+  - ftr150
+  - hcbin
+  - hgh865
+  - hjf271
+  - hli077
+  - hms253
+  - hnr240
+  - ihc252
+  - jbg686
+  - jdb246
+  - jdl704
+  - jdu329
+  - jeb946
+  - jep765
+  - jmm945
+  - jpm216
+  - jre934
+  - jrl912
+  - jrr907
+  - kat710
+  - kln223
+  - kmt106
+  - kse830
+  - lcg694
+  - lhein
+  - lhein
+  - lmw999
+  - lro809
+  - mab285
+  - matt
+  - mcdough
+  - mcu220
+  - mds145
+  - mmueller
+  - mru828
+  - mwt876
+  - mymble
+  - nam503
+  - ngf811
+  - njh482
+  - pca559
+  - "r-linrothe"
+  - rhs841
+  - rko534
+  - rnl304
+  - sef000
+  - sfe387
+  - sfj455
+  - shc766
+  - skm170
+  - slg989
+  - syc344
+  - tlh217
+  - wnw773
+  - xya998
 
 development:  
    <<: *defaults
