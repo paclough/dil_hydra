@@ -7,7 +7,7 @@ defaults: &defaults
   dil_fedora_disseminator_ppt: /inu:sdef-image/getWithLongSide?length=
   dil_uploads_collection: My Uploads
   dil_details_collection: My Image Details
-  
+
   admin_staff:
   - mcs680
   - ega505
@@ -17,7 +17,7 @@ defaults: &defaults
   - cfc478
   - steve
   - toc171
-  - skm170  
+  - pac913
 
   uploaders:
   - aab509
@@ -142,4 +142,3 @@ production:
    dil_app_url: http://images.library.northwestern.edu/
    dil_ppt_cgi_url: http://gandalf.library.northwestern.edu/cgi-bin/hydra/hydra-export-ppt-jms.cgi
    dil_upload_cgi_url: http://gandalf.library.northwestern.edu/cgi-bin/hydra/hydra-upload.cgi
-   
