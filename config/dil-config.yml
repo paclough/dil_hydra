@@ -7,6 +7,9 @@ defaults: &defaults
   dil_fedora_disseminator_ppt: /inu:sdef-image/getWithLongSide?length=
   dil_uploads_collection: My Uploads
   dil_details_collection: My Image Details
+  record_lock_sleep_value: 0.5
+  max_nbr_lock_attempts: 90
+  
 
   admin_staff:
   - mcs680
