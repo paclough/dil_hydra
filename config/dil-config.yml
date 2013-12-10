@@ -20,7 +20,7 @@ defaults: &defaults
      lol cats:
        pid: inu:dil-ccbe42d9-2611-487c-a1f6-fc2a6f283250
        title: LOL Cats
-       image_url: /multiresimages/get_image/inu:dil-d3abaeb6-a4ff-47e9-bea0-ca6123d5e429/230
+       image_url: /assets/cats_and_watermelons.jpg
        solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=LOL+Cats
 
   admin_staff:
