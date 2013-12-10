@@ -10,7 +10,7 @@ defaults: &defaults
   record_lock_sleep_value: 0.5
   max_nbr_lock_attempts: 90
   private_institutional_collection_names:
-  - LOL Catzzz
+  - LOL Cats
   institutional_collection:
      hot dogs:
        pid: inu:dil-local-7de1cda8-2d3b-4242-bc27-426c4b420a39
@@ -19,7 +19,7 @@ defaults: &defaults
        solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=Hot+Dogs
      lol cats:
        pid: inu:dil-ccbe42d9-2611-487c-a1f6-fc2a6f283250
-       title: LOL Catzzz
+       title: LOL Cats
        image_url: /multiresimages/get_image/inu:dil-d3abaeb6-a4ff-47e9-bea0-ca6123d5e429/230
        solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=LOL+Cats
 
