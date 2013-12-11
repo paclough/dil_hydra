@@ -14,8 +14,8 @@ defaults: &defaults
   institutional_collection:
      hot dogs:
        pid: inu:dil-local-7de1cda8-2d3b-4242-bc27-426c4b420a39
-       title: Hot Dogs
-       image_url: /multiresimages/get_image/inu:dil-68f22ef6-f1ab-44dc-b51d-1dd14cb52af5/230
+       title: Hot Dogs*
+       image_url: /assets/cats_and_watermelons.jpg #/multiresimages/get_image/inu:dil-68f22ef6-f1ab-44dc-b51d-1dd14cb52af5/230
        solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=Hot+Dogs
      lol cats:
        pid: inu:dil-ccbe42d9-2611-487c-a1f6-fc2a6f283250
@@ -33,6 +33,7 @@ defaults: &defaults
   - steve
   - toc171
   - pac913
+  - bmq449
 
   uploaders:
   - aab509
