@@ -10,6 +10,7 @@ defaults: &defaults
   record_lock_sleep_value: 0.5
   max_nbr_lock_attempts: 90
   private_institutional_collection_names:
+  - LOL Cats 
   institutional_collection:
     hot dogs:
       pid: inu:dil-local-7de1cda8-2d3b-4242-bc27-426c4b420a39
