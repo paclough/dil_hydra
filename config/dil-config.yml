@@ -22,6 +22,8 @@ defaults: &defaults
       title: LOL Cats*
       image_url: /assets/cats_and_watermelons.jpg
       solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=LOL+Cats
+    "World War II Poster Collection at Northwestern University Library":
+      pid: inu:dil-932ada6f-5cce-45c8-a6b9-139e1e1f281b
 
 
   admin_staff:
