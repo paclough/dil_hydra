@@ -23,6 +23,7 @@ defaults: &defaults
       image_url: /assets/cats_and_watermelons.jpg
       solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=LOL+Cats
 
+
   admin_staff:
   - mcs680
   - ega505
