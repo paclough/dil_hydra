@@ -36,6 +36,7 @@ defaults: &defaults
   - toc171
   - pac913
   - bmq449
+  - hms253
 
   uploaders:
   - aab509
