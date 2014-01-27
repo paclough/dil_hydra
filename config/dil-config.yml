@@ -10,20 +10,19 @@ defaults: &defaults
   record_lock_sleep_value: 0.5
   max_nbr_lock_attempts: 90
   private_institutional_collection_names:
-  - LOL Cats 
+  - "Digital Image Library"
+  - LOL Cats
   institutional_collection:
-    hot dogs:
-      pid: inu:dil-local-7de1cda8-2d3b-4242-bc27-426c4b420a39
-      title: Hot Dogs
-      image_url: /assets/tail_of_the_pup.jpg #/multiresimages/get_image/inu:dil-68f22ef6-f1ab-44dc-b51d-1dd14cb52af5/230
-      solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=Hot+Dogs
-    lol cats:
-      pid: inu:dil-ccbe42d9-2611-487c-a1f6-fc2a6f283250
-      title: LOL Cats*
-      image_url: /assets/cats_and_watermelons.jpg
-      solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=LOL+Cats
+    "Digital Image Library":
+      pid: inu:dil-local-23655b1f-7029-4fb4-aa10-8ababe0ca63b
+      title: Digital Image Library*
+      image_url: /assets/assets/tail_of_the_pup.jpg #This needs to change
+      solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=Digital+Image+Library
     "World War II Poster Collection at Northwestern University Library":
       pid: inu:dil-932ada6f-5cce-45c8-a6b9-139e1e1f281b
+      title: "World War II Poster Collection at Northwestern University Library"
+      image_url: /assets/wwii-posters-thumbnail.jpg
+      solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=World+War+II+Poster+Collection+at+Northwestern+University+Library
 
 
   admin_staff:
@@ -134,6 +133,17 @@ development:
    dil_app_url: https://localhost:3000/
    dil_ppt_cgi_url: http://gandalf.library.northwestern.edu/cgi-bin/hydra/hydra-export-ppt-jms-test.cgi
    dil_upload_cgi_url: http://gandalf.library.northwestern.edu/cgi-bin/hydra/hydra-upload-test.cgi
+   institutional_collection:
+     hot dogs:
+       pid: inu:dil-local-7de1cda8-2d3b-4242-bc27-426c4b420a39
+       title: Hot Dogs
+       image_url: /assets/tail_of_the_pup.jpg #/multiresimages/get_image/inu:dil-68f22ef6-f1ab-44dc-b51d-1dd14cb52af5/230
+       solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=Hot+Dogs
+     lol cats:
+       pid: inu:dil-ccbe42d9-2611-487c-a1f6-fc2a6f283250
+       title: LOL Cats*
+       image_url: /assets/cats_and_watermelons.jpg
+       solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=LOL+Cats
 
 test:  
    <<: *defaults
