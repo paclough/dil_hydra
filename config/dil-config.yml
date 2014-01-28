@@ -16,7 +16,7 @@ defaults: &defaults
     "Digital Image Library":
       pid: inu:dil-local-23655b1f-7029-4fb4-aa10-8ababe0ca63b
       title: Digital Image Library*
-      image_url: /assets/assets/tail_of_the_pup.jpg #This needs to change
+      image_url: /assets/assets/digital-image-library-thumbnail.jpg
       solr_url: /catalog?f%5Binstitutional_collection_title_facet%5D%5B%5D=Digital+Image+Library
     "World War II Poster Collection at Northwestern University Library":
       pid: inu:dil-932ada6f-5cce-45c8-a6b9-139e1e1f281b
