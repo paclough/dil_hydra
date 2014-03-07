@@ -9,6 +9,7 @@ defaults: &defaults
   dil_details_collection: My Image Details
   record_lock_sleep_value: 0.5
   max_nbr_lock_attempts: 90
+  dil_js_url: http://ansel.library.northwestern.edu/ImageServer/imageserver?viewwidth
   private_institutional_collection_names:
   - "Digital Image Library"
   - LOL Cats
