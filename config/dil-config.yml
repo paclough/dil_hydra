@@ -30,6 +30,7 @@ defaults: &defaults
   - jjh123
   - sas592
   - bpj152
+  - skrafft
 
   uploaders:
   - aab509
@@ -116,6 +117,7 @@ defaults: &defaults
   - sfj455
   - shc766
   - skm170
+  - skrafft
   - slg989
   - syc344
   - tlh217
