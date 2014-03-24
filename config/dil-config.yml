@@ -26,6 +26,11 @@ defaults: &defaults
   - pac913
   - bmq449
   - hms253
+  - jch629
+  - jjh123
+  - sas592
+  - bpj152
+  - skrafft
 
   uploaders:
   - aab509
@@ -68,11 +73,13 @@ defaults: &defaults
   - hnr240
   - ihc252
   - jbg686
+  - jch629
   - jdb246
   - jdl704
   - jdu329
   - jeb946
   - jep765
+  - jjh123
   - jmm945
   - jpm216
   - jre934
@@ -104,11 +111,13 @@ defaults: &defaults
   - rhs841
   - rko534
   - rnl304
+  - sas592
   - sef000
   - sfe387
   - sfj455
   - shc766
   - skm170
+  - skrafft
   - slg989
   - syc344
   - tlh217
