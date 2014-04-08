@@ -11,7 +11,6 @@
 	<xsl:param name="item_pid"/>
 	<xsl:param name="work_or_image"/>
 	
-
 	<xsl:output method="xml" omit-xml-declaration="no" indent="yes" encoding="utf-8"
 		media-type="text/xml"/>
 		
@@ -538,6 +537,10 @@
 		<xsl:call-template name="addEmptyTechniqueSet"/>
 		<!-- Mike -->
 
+		<!-- added by Karen - 4/8/2014-->
+		<xsl:call-template name="addEmptyTextrefSet"/>
+		<!-- Karen -->
+
 		<!-- ______________ Titles ______________ -->
 	    <!-- needs more work -BQ -->
 		<xsl:if test="marc:datafield[@tag='240' or @tag='245' or @tag='246' or @tag='130']">
@@ -643,6 +646,18 @@
 		</vra:techniqueSet>
 	</xsl:template>
 	<!-- Mike -->
+	
+	<!--Added by Karen 4/8/2014-->
+	<xsl:template name="addEmptyTextrefSet">
+		<xsl:call-template name="comment">
+			<xsl:with-param name="comment">Textref</xsl:with-param>
+		</xsl:call-template>
+		<vra:textrefSet>
+			<vra:display/>
+			<vra:textref/>
+		</vra:textrefSet>
+	</xsl:template>
+	<!--Karen-->
 
     <!-- Mike 1/24/2014 -->
     <xsl:template name="addWorktypeSet">
