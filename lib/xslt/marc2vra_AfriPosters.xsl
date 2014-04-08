@@ -67,28 +67,33 @@
 
 
 	<!-- Convert MARC to VRA without the enclosing vra:work or vra:item. These are provided by caller -->
+	<!-- Added 100e, 110e, 710e, 710cdne, 711 adcn, 264b Jen 04/08/2014 -->
 	<xsl:template name="marc2vra">
 		<!-- ______________ Agents ______________ -->
 		<xsl:if
-			test="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
-			or marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g'] 
-			or marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
-			or marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']
-			or marc:datafield[@tag='260']/marc:subfield[@code='b']">
+			test="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
+			or marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='e' or marc:subfield/@code='g'] 
+			or marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
+			or marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='n']
+			or marc:datafield[@tag='711'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='n']
+			or marc:datafield[@tag='260']/marc:subfield[@code='b']
+			or marc:datafield[@tag='264']/marc:subfield[@code='b']"	>
 			<xsl:call-template name="comment">
 				<xsl:with-param name="comment">Agents</xsl:with-param>
 			</xsl:call-template>
 			<vra:agentSet>
 				<vra:display>
 					<xsl:for-each
-						select="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q'] 
-						| marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']
+						select="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q'] 
+						| marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='e' or marc:subfield/@code='g']
 						| marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
-						| marc:datafield[@tag='710'][marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g'] ">
+						| marc:datafield[@tag='710'][marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g'] 
+						| marc:datafield[@tag='711'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='n'] ">
 						<xsl:call-template name="displaySeparator"/>
 						<xsl:apply-templates select="." mode="display"/>													
 					</xsl:for-each>
-					<xsl:if test="marc:datafield[@tag='260']/marc:subfield[@code='b']">
+					<!-- need to figure out 264 - maybe a choose statement with if/then/else Jen 04/08/2014 -->
+					<xsl:if test="marc:datafield[@tag='260']/marc:subfield[@code='b'] or marc:datafield[@tag='264']/marc:subfield[@code='b']">
 						<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='b']"> ; <xsl:analyze-string select="." regex="(,| :|\],)$">
 								<xsl:non-matching-substring>
 									<xsl:value-of select="."/>
@@ -106,7 +111,7 @@
 				<xsl:apply-templates
 					select="marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']"/>
 				
-				<xsl:if test="marc:datafield[@tag='260']/marc:subfield[@code='b']">
+				<xsl:if test="marc:datafield[@tag='260']/marc:subfield[@code='b'] or marc:datafield[@tag='264']/marc:subfield[@code='b']">
 					<vra:agent>
 						<vra:name type="corporate" vocab="lcnaf">
 							<xsl:if test="marc:datafield[@tag='710'][marc:subfield/@code='0']">
@@ -114,7 +119,8 @@
 									<xsl:value-of select="marc:datafield[@tag='710'][marc:subfield/@code='0']"/>
 								</xsl:attribute>							
 							</xsl:if>
-							<xsl:if test="marc:datafield[@tag='260']/marc:subfield[@code='b']">
+							<xsl:if test="marc:datafield[@tag='260']/marc:subfield[@code='b'] or marc:datafield[@tag='264']/marc:subfield[@code='b']">
+<!-- need to figure out the for-each to add 264 Jen 04/08/2014	-->
 								<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='b']">
 									<xsl:call-template name="displaySeparator"/>
 									<xsl:analyze-string select="." regex="(,| :|\],)$">
@@ -935,8 +941,8 @@
 
 	<!-- rights -->
 	<xsl:template match="marc:datafield[@tag='540']/marc:subfield[@code='a']">
-		<vra:rights type="publicDomain">
-			<vra:rightsHolder>Public Domain</vra:rightsHolder><vra:text><xsl:value-of select="."/></vra:text>
+		<vra:rights type="undetermined">
+			<vra:rightsHolder>Undetermined</vra:rightsHolder><vra:text><xsl:value-of select="."/></vra:text>
 
 		</vra:rights>
 	</xsl:template>
