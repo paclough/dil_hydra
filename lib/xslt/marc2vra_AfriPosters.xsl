@@ -567,22 +567,19 @@
 			<vra:titleSet>
 				<vra:display>
 					<xsl:for-each
-						select="marc:datafield[@tag='245'][marc:subfield/@code='a' or marc:subfield/@code='p'] | marc:datafield[@tag='246'][marc:subfield/@code='a' or marc:subfield/@code='i']">
+						select="marc:datafield[@tag='245'] | marc:datafield[@tag='246' and (@ind2='2' or @ind2='3')]">
 						<xsl:call-template name="stripTrailingForwardSlash"/>
 						<xsl:call-template name="displaySeparator"/>
-
-						<!-- Changed by Bill Parod 1/22/2012 -->
 						<xsl:apply-templates select="." mode="display"/>
 					</xsl:for-each>
 				</vra:display>
-				<xsl:apply-templates select="marc:datafield[@tag='130'][marc:subfield/@code='a' or marc:subfield/@code='d']"/>
-				<xsl:apply-templates select="marc:datafield[@tag='240'][marc:subfield/@code='a' or marc:subfield/@code='g' or marc:subfield/@code='d']"/>
-				<xsl:apply-templates select="marc:datafield[@tag='245'][marc:subfield/@code='a' or marc:subfield/@code='p']"/>
-				<xsl:apply-templates select="marc:datafield[@tag='246'][marc:subfield/@code='a']"/>
+				<xsl:apply-templates select="marc:datafield[@tag='130']"/>
+				<xsl:apply-templates select="marc:datafield[@tag='240']"/>
+				<xsl:apply-templates select="marc:datafield[@tag='245']"/>
+				<xsl:apply-templates select="marc:datafield[@tag='246']"/>
 			</vra:titleSet>
 		</xsl:if>
 
-		<!--Added by Karen-->
 		<!-- ______________ WorkType ______________ -->
 		<xsl:choose>
 		<xsl:when test="marc:datafield[@tag='655']/marc:subfield[@code='a']">
@@ -847,11 +844,11 @@
     </xsl:template>
     
 	<xsl:template
-		match="marc:datafield[@tag='245'][marc:subfield/@code='a' or marc:subfield/@code='p']">
+		match="marc:datafield[@tag='245']">
 		<vra:title pref="true">
 			<xsl:call-template name="stripTrailingForwardSlash">
 				<xsl:with-param name="val">
-					<xsl:value-of select="marc:subfield[@code='a' or @code='p']"/>
+					<xsl:value-of select="marc:subfield[@code='a' or @code='b' or @code='p']"/>
 				</xsl:with-param>
 			</xsl:call-template>
 		</vra:title>
