@@ -11,12 +11,6 @@
 	<xsl:param name="item_pid"/>
 	<xsl:param name="work_or_image"/>
 	
-	<!--Added by Karen 4/8/2014-->
-	<xsl:variable name="lang008">
-		<xsl:value-of select="substring(marc:controlfield[@tag='008'],36,3)"/>
-	</xsl:variable>
-	<!--Karen-->
-	
 	<xsl:output method="xml" omit-xml-declaration="no" indent="yes" encoding="utf-8"
 		media-type="text/xml"/>
 		
@@ -39,6 +33,11 @@
 		</xsl:text>
 	</xsl:template>
 
+	<!--Added by Karen 4/8/2014-->
+	<xsl:variable name="lang008">
+		<xsl:value-of select="substring(marc:controlfield[@tag='008'],36,3)"/>
+	</xsl:variable>
+	
 	<xsl:template match="marc:record" mode="work">
 		<vra:work>
 			<xsl:attribute name="id">inu-dil-<xsl:value-of select="marc:controlfield[@tag='001']"
@@ -197,22 +196,21 @@
 			<xsl:variable name="noteCount">
 				<xsl:value-of select="count(//marc:datafield[@tag='500' or @tag='505' or @tag='520'])"/>
 			</xsl:variable>
-
+			
 			<!--Generate a holding place for 546 notes for records with language code 'bnt'-->	
 			<!--This is seriously messy. But I couldn't get the test to take multiple conditions.-->					
 			<xsl:variable name="languageNote">
 				<xsl:if test="$lang008='bnt'">
-					<xsl:value-of select="marc:datafield[@tag='546']/marc:subfield[@code='a']"></xsl:value-of>
+					<xsl:value-of select="marc:datafield[@tag='546']/marc:subfield[@code='a']"/>
 				</xsl:if>
 				<xsl:if test="marc:datafield[@tag='041']/marc:subfield[@code='a']='bnt'">
-					<xsl:value-of select="marc:datafield[@tag='546']/marc:subfield[@code='a']"></xsl:value-of>
+					<xsl:value-of select="marc:datafield[@tag='546']/marc:subfield[@code='a']"/>
 				</xsl:if>
 				<xsl:if test="marc:datafield[@tag='041']/marc:subfield[@code='h']='bnt'">
-					<xsl:value-of select="marc:datafield[@tag='546']/marc:subfield[@code='a']"></xsl:value-of>
+					<xsl:value-of select="marc:datafield[@tag='546']/marc:subfield[@code='a']"/>
 				</xsl:if>
 			</xsl:variable>
 			<!--Karen-->		
-			
 			<vra:descriptionSet>
 				<vra:display>
 					<xsl:for-each select="marc:datafield[@tag='500']/marc:subfield[@code='a'] | marc:datafield[@tag='505']/marc:subfield[@code='a'] 
@@ -1363,12 +1361,12 @@
 		<xsl:text>Language(s): </xsl:text>
 		<xsl:call-template name="languageCodes">
 			<xsl:with-param name="lang">
-				<xsl:value-of select="$lang008"/>
+				<xsl:value-of select="substring(marc:controlfield[@tag='008'],36,3)"/>
 			</xsl:with-param>
 		</xsl:call-template>
 		<xsl:for-each select="marc:datafield[@tag='041']/marc:subfield[@code='a'] | marc:datafield[@tag='041']/marc:subfield[@code='h']">
-			<xsl:if test="$lang008 != .">
-				<xsl:call-template name="displaySeparator"/>
+			<xsl:if test="normalize-space(.) != substring(../../marc:controlfield[@tag='008'],36,3)">
+				<xsl:text> ; </xsl:text>
 				<xsl:call-template name="languageCodes">
 					<xsl:with-param name="lang">
 						<xsl:value-of select="."/>
@@ -1378,8 +1376,6 @@
 		</xsl:for-each>
 	</xsl:template>
 	<!--Karen-->	
-
-
 
 	<xsl:template match="*|text()"/>
 
