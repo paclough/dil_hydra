@@ -198,15 +198,8 @@
 			</xsl:variable>
 			
 			<!--Generate a holding place for 546 notes for records with language code 'bnt'-->	
-			<!--This is seriously messy. But I couldn't get the test to take multiple conditions.-->					
 			<xsl:variable name="languageNote">
-				<xsl:if test="$lang008='bnt'">
-					<xsl:value-of select="marc:datafield[@tag='546']/marc:subfield[@code='a']"/>
-				</xsl:if>
-				<xsl:if test="marc:datafield[@tag='041']/marc:subfield[@code='a']='bnt'">
-					<xsl:value-of select="marc:datafield[@tag='546']/marc:subfield[@code='a']"/>
-				</xsl:if>
-				<xsl:if test="marc:datafield[@tag='041']/marc:subfield[@code='h']='bnt'">
+				<xsl:if test="$lang008='bnt' or marc:datafield[@tag='041']/marc:subfield[@code='a']='bnt' or marc:datafield[@tag='041']/marc:subfield[@code='h']='bnt'">
 					<xsl:value-of select="marc:datafield[@tag='546']/marc:subfield[@code='a']"/>
 				</xsl:if>
 			</xsl:variable>
@@ -742,7 +735,7 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</vra:name>
-			<xsl:apply-templates select="marc:subfield[@code='d']" mode="agent"/>
+
 			<!-- added by Mike 3/12/2012-->
 			<xsl:if
 				test="//marc:datafield[@tag='046']/marc:subfield[@code='f'] | //marc:datafield[@tag='046']/marc:subfield[@code='g']">
@@ -828,16 +821,6 @@
 			<xsl:value-of select="."/>
 		</xsl:attribute>
 	</xsl:template>
-
-	<!-- agent date -->
-	<!-- 	If there are two dates (i.e., 1942-2006), the first one goes in earliestDate. If there is only one date and it is followed by a single hypen (i.e., 1942-) then it goes here. 
-		If there is only one date and it is preceded by text "b. " (i.e., b. 1889) then it goes in earliestDate. 
-		If there are two dates (i.e., 1942-2006), the second one goes in latestDate. 
-		If there is only one date and it is preceded by text "d. " (i.e., d. 1956) then it goes in latestDate.
-		-->
-	<xsl:template match="marc:subfield[@code='d']" mode="agent">
-	</xsl:template>
-
 
 	<!-- titles -->
     <!-- added by Brendan Quinn 1/9/2014, needs more work -->
@@ -1111,13 +1094,18 @@
 		</xsl:attribute>
 	</xsl:template>
 
+	<!-- subject vocab attribute -->
+	<xsl:template match="marc:subfield[@code='0']">
+		<xsl:attribute name="vocab">
+
+		</xsl:attribute>
+	</xsl:template>
+
 	<!-- subjects --><!-- 043 added by Karen-->
 	<xsl:template
 		match="marc:datafield[@tag='043']/marc:subfield[@code='a']">
 		<vra:subject>
 			<vra:term type="geographicPlace" vocab="lcnaf">
-				<xsl:apply-templates select="marc:subfield[@code='0']"/>
-				<xsl:apply-templates select="../marc:subfield[@code='2']"/>
 				<xsl:for-each select=".">
 					<xsl:call-template name="displaySeparator"/>
 					<xsl:call-template name="countryCodes">
@@ -1138,13 +1126,28 @@
 		<vra:subject>
 			<vra:term>
 				<xsl:attribute name="type"><xsl:value-of select="$subjectType"/></xsl:attribute>
-				<xsl:apply-templates select="../marc:subfield[@code='2']"/>
+				<xsl:choose>
+					<xsl:when test="marc:subfield[@code='2']">
+						<xsl:apply-templates select="marc:subfield[@code='2']"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:choose>
+							<xsl:when test="($subjectType='corporateName' or $subjectType='personalName')">
+								<xsl:attribute name="vocab">lcnaf</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="vocab">lcsh</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:for-each select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='q' or @code='d' or @code='n']">
 					<xsl:if test="position()!=1"><xsl:text> </xsl:text></xsl:if>
 					<xsl:value-of select="."/>
 				</xsl:for-each>
 			</vra:term>
 		</vra:subject>
+		
 		<xsl:for-each select="marc:subfield[@code='t' or @code='v']">
 			<vra:subject>
 				<vra:term>
@@ -1253,7 +1256,6 @@
 	<xsl:template name="displaySeparator">
 		<xsl:if test="position()!=1"><xsl:text> </xsl:text>;<xsl:text> </xsl:text></xsl:if>
 	</xsl:template>
-
 
 	<xsl:template name="stripTrailingPeriod">
 		<xsl:param name="val"/>
