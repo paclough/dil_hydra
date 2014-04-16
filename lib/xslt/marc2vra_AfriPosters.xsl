@@ -89,9 +89,14 @@
 			<vra:agentSet>
 				<vra:display>
 					<xsl:for-each
-						select="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q'] 
-						| marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='e' or marc:subfield/@code='g']
-						| marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
+						select="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or
+						marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or 
+						marc:subfield/@code='j' or marc:subfield/@code='q'] 
+						| marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or
+						marc:subfield/@code='e' or marc:subfield/@code='g']
+						| marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or 
+						marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or 
+						marc:subfield/@code='q']
 						| marc:datafield[@tag='710'][marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g'] 
 						| marc:datafield[@tag='711'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='n'] ">
 						<xsl:call-template name="displaySeparator"/>
@@ -108,7 +113,9 @@
 					</xsl:if>	
 				</vra:display>
 				<xsl:apply-templates
-					select="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']"/>
+					select="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or
+					marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' 
+					or marc:subfield/@code='q']"/>
 				<xsl:apply-templates
 					select="marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']"/>
 				<xsl:apply-templates
@@ -735,7 +742,7 @@
 		<xsl:call-template name="stripTrailingPeriod">
 			<xsl:with-param name="val">
 				<xsl:value-of
-					select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='d' or @code='g' or @code='j' or @code='q']"
+					select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='d' or @code='e' or @code='g' or @code='j' or @code='q']"
 				/>
 			</xsl:with-param>
 		</xsl:call-template>
@@ -772,13 +779,13 @@
 				<xsl:call-template name="stripTrailingPeriod">
 					<xsl:with-param name="val">
 						<xsl:value-of
-							select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='g' or @code='j' or @code='q']"
+							select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='d' or @code='g' or @code='j' or @code='q']"
 						/>
 					</xsl:with-param>
 				</xsl:call-template>
 			</vra:name>
 
-			<!-- added by Mike 3/12/2012-->
+			<!-- added by Mike 3/12/2012 , edited by Jen, the RDA bits. 04/16/2014-->
 			<xsl:if
 				test="//marc:datafield[@tag='046']/marc:subfield[@code='f'] | //marc:datafield[@tag='046']/marc:subfield[@code='g']">
 				<vra:dates type="life">
@@ -790,6 +797,15 @@
 			</xsl:if>
 			<xsl:apply-templates select="//marc:datafield[@tag='370']/marc:subfield[@code='a']"/>
 			<vra:attribution/>
+			<vra:role vocab="RDA">
+								<xsl:call-template name="stripTrailingPeriod">
+					<xsl:with-param name="val">
+						<xsl:value-of
+							select="marc:subfield[@code='e']"
+						/>
+					</xsl:with-param>
+				</xsl:call-template>
+			</vra:role>
 			<!-- Mike -->
 		</vra:agent>
 	</xsl:template>
