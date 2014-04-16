@@ -146,28 +146,61 @@
 		<xsl:call-template name="addEmptyCulturalContextSet"/>
 		<!-- Mike -->
 
-
+		<!--Karen added test for 260 (and 264) with missing decades & moved previous code to named template publicationDate-->
 		<xsl:if
-			test="marc:datafield[@tag='046']/marc:subfield[@code='s'] | marc:datafield[@tag='046']/marc:subfield[@code='t'] | marc:datafield[@tag='260']/marc:subfield[@code='c']">
+			test="marc:datafield[@tag='046']/marc:subfield[@code='s'] | marc:datafield[@tag='046']/marc:subfield[@code='t'] 
+			| marc:datafield[@tag='260']/marc:subfield[@code='c'] | marc:datafield[@tag='264']/marc:subfield[@code='c'] ">
 			<xsl:call-template name="comment">
 				<xsl:with-param name="comment">Dates</xsl:with-param>
 			</xsl:call-template>
 			<vra:dateSet>
 				<vra:display>
-					<xsl:analyze-string select="marc:datafield[@tag='260']/marc:subfield[@code='c']" regex="\d\d\d-\?">
-						<xsl:matching-substring>
-							<xsl:analyze-string select="." regex="\d\d\d">
-								<xsl:matching-substring>
-									<xsl:value-of select="."/>0s</xsl:matching-substring>
-							</xsl:analyze-string>
-						</xsl:matching-substring>
-					</xsl:analyze-string>
-					<xsl:analyze-string select="marc:datafield[@tag='260']/marc:subfield[@code='c']" regex="\d{{4}}">
-						<xsl:matching-substring>
-							<xsl:value-of select="."/>
-						</xsl:matching-substring>
-					</xsl:analyze-string>
-					<xsl:call-template name="displaySeparator"/>
+					<xsl:choose>
+						<xsl:when test="marc:datafield[@tag='260']/marc:subfield[@code='c']">
+							<xsl:call-template name="publicationDate">
+								<xsl:with-param name="thisC">
+									<xsl:value-of
+										select="marc:datafield[@tag='260']/marc:subfield[@code='c']"/>
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:when>
+						<!--If there are multiple 264$cs, take only one, in this order of preference: 1,4,0,3,2-->
+						<xsl:when test="marc:datafield[@tag='264' and @ind2='1']/marc:subfield[@code='c']">
+							<xsl:call-template name="publicationDate">
+								<xsl:with-param name="thisC">
+									<xsl:value-of select="marc:datafield[@tag='264' and @ind2='1']/marc:subfield[@code='c']"/>
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:when test="marc:datafield[@tag='264' and @ind2='4']/marc:subfield[@code='c']">
+							<xsl:call-template name="publicationDate">
+								<xsl:with-param name="thisC">
+									<xsl:value-of select="marc:datafield[@tag='264' and @ind2='4']/marc:subfield[@code='c']"/>
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:when test="marc:datafield[@tag='264' and @ind2='0']/marc:subfield[@code='c']">
+							<xsl:call-template name="publicationDate">
+								<xsl:with-param name="thisC">
+									<xsl:value-of select="marc:datafield[@tag='264' and @ind2='0']/marc:subfield[@code='c']"/>
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:when test="marc:datafield[@tag='264' and @ind2='3']/marc:subfield[@code='c']">
+							<xsl:call-template name="publicationDate">
+								<xsl:with-param name="thisC">
+									<xsl:value-of select="marc:datafield[@tag='264' and @ind2='3']/marc:subfield[@code='c']"/>
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="publicationDate">
+								<xsl:with-param name="thisC">
+									<xsl:value-of select="marc:datafield[@tag='264' and @ind2='2']/marc:subfield[@code='c']"/>
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
 				</vra:display>
 				<xsl:choose>
 					<xsl:when test="marc:datafield[@tag='046'] or marc:datafield[@tag='648']">
@@ -183,7 +216,8 @@
 				</xsl:choose>
 			</vra:dateSet>
 		</xsl:if>
-
+	
+	
 		<!-- ______________ Description ______________ -->
 		<!-- 505 and 506 added by Brendan, Added 520; 546 notes returned True (Radhi) ; removed 546 & replaced with conditional at bottom (Karen)-->
 		<!--Karen added 008, 041, and 562.-->
@@ -874,6 +908,33 @@
 			</xsl:call-template>
 		</vra:title>
 	</xsl:template>
+
+<!--publication Date from 260$c or 264$c. Added by Karen 4/16/2014-->
+	<xsl:template name="publicationDate">
+		<xsl:param name="thisC"/>
+		<xsl:analyze-string select="$thisC" regex="\d\d\--\?">
+			<xsl:matching-substring>
+				<xsl:analyze-string select="." regex="\d\d">
+					<xsl:matching-substring>
+						<xsl:value-of select="."/>00s</xsl:matching-substring>
+				</xsl:analyze-string>
+			</xsl:matching-substring>
+		</xsl:analyze-string>
+		<xsl:analyze-string select="$thisC" regex="\d\d\d-\?">
+			<xsl:matching-substring>
+				<xsl:analyze-string select="." regex="\d\d\d">
+					<xsl:matching-substring>
+						<xsl:value-of select="."/>0s</xsl:matching-substring>
+				</xsl:analyze-string>
+			</xsl:matching-substring>
+		</xsl:analyze-string>
+		<xsl:analyze-string select="$thisC" regex="\d{{4}}">
+			<xsl:matching-substring>
+				<xsl:value-of select="."/>
+			</xsl:matching-substring>
+		</xsl:analyze-string>
+		<xsl:call-template name="displaySeparator"/>
+	</xsl:template>		
 
 	<!-- date 046$s, 046$t, 648$s, and 648$t -->
 
