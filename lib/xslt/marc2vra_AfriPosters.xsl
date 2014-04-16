@@ -402,9 +402,13 @@
 			</xsl:for-each>
 		</xsl:variable>
 
-		<xsl:variable name="rel_title_wwii">
+		<xsl:variable name="rel_title_wwii"><!--Karen added 800$atv, 730$a, and 700 and 710 if $t 4/16/2014--> 
 				<xsl:for-each select="marc:datafield[@tag='440']/marc:subfield[@code='a' or @code='v']
-				| marc:datafield[@tag='830']/marc:subfield[@code='a' or @code='v']">
+				| marc:datafield[@tag='830']/marc:subfield[@code='a' or @code='v'] 
+				| marc:datafield[@tag='800']/marc:subfield[@code='a' or @code='t' or @code='v']
+				| marc:datafield[@tag='730']/marc:subfield[@code='a']
+				| marc:datafield[@tag='700']/marc:subfield[@code='t' and (@code='a' or @code='b' or @code='c' or @code='e' or @code='j' or @code='q' or @code='l' or @code='v')]
+				| marc:datafield[@tag='710']/marc:subfield[@code='t'and (@code='a' or @code='b')]">
 					<xsl:call-template name="displaySeparator"/>
 					<xsl:call-template name="stripTrailingSemicolon">
 						<xsl:with-param name="val">
@@ -412,7 +416,6 @@
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:for-each>
-			<!-- <xsl:call-template name="displaySeparator"/> -->
 		</xsl:variable>
 		
 		<xsl:choose>
@@ -430,7 +433,11 @@
 						</xsl:attribute>
 					</vra:relation>
 					<xsl:if test="marc:datafield[@tag='440']/marc:subfield[@code='a' or @code='v']
-						| marc:datafield[@tag='830']/marc:subfield[@code='a' or @code='v']">
+						| marc:datafield[@tag='830']/marc:subfield[@code='a' or @code='v']
+						| marc:datafield[@tag='800']/marc:subfield[@code='a' or @code='t' or @code='v']
+						| marc:datafield[@tag='730']/marc:subfield[@code='a']
+						| marc:datafield[@tag='700']/marc:subfield[@code='t' and (@code='a' or @code='b' or @code='c' or @code='e' or @code='j' or @code='q' or @code='l' or @code='v')]
+						| marc:datafield[@tag='710']/marc:subfield[@code='t'and (@code='a' or @code='b')]">
 						<vra:relation pref="false">
 							<xsl:value-of select="$rel_title_wwii"/>
 						</vra:relation>
@@ -452,7 +459,11 @@
 						</xsl:attribute>
 					</vra:relation>
 					<xsl:if test="marc:datafield[@tag='440']/marc:subfield[@code='a' or @code='v']
-						| marc:datafield[@tag='830']/marc:subfield[@code='a' or @code='v']">
+						| marc:datafield[@tag='830']/marc:subfield[@code='a' or @code='v']
+						| marc:datafield[@tag='800']/marc:subfield[@code='a' or @code='t' or @code='v']
+						| marc:datafield[@tag='730']/marc:subfield[@code='a']
+						| marc:datafield[@tag='700']/marc:subfield[@code='t' and (@code='a' or @code='b' or @code='c' or @code='e' or @code='j' or @code='q' or @code='l' or @code='v')]
+						| marc:datafield[@tag='710']/marc:subfield[@code='t'and (@code='a' or @code='b')]">
 						<vra:relation pref="false">
 							<xsl:value-of select="$rel_title_wwii"/>
 						</vra:relation>
