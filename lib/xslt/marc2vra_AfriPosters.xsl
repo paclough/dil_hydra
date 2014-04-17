@@ -295,13 +295,18 @@
 		
 		<!-- ______________ Location ______________ -->
 		<!-- Always have location because we always have a pid and probably have a bibid -->
+		<!--Karen added 264$a and 590, 4/17/2014-->
 		<xsl:call-template name="comment">
 			<xsl:with-param name="comment">Location</xsl:with-param>
 		</xsl:call-template>
 		<vra:locationSet>
 			<vra:display>
 				<xsl:for-each
-				    select="marc:datafield[@tag='260']/marc:subfield[@code='a'] | marc:datafield[@tag='752'][marc:subfield/@code!='g'] | marc:datafield[@tag='535'][marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c'] ">
+				    select="marc:datafield[@tag='260']/marc:subfield[@code='a'] 
+				    | marc:datafield[@tag='264' and @ind2='1']/marc:subfield[@code='a'] 
+				    | marc:datafield[@tag='752'][marc:subfield/@code!='g'] 
+				    | marc:datafield[@tag='535'][marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c'] 
+				    | marc:datafield[@tag='590']/marc:subfield[@code='a']">
 					<xsl:call-template name="displaySeparator"/>
 					<xsl:call-template name="stripBrackets">
 						<xsl:with-param name="val">
@@ -311,9 +316,11 @@
 				</xsl:for-each>
 				<xsl:if test="marc:datafield[@tag='086'][marc:subfield/@code='a']"> ; U.S. Superintendent of Documents Classification number: <xsl:apply-templates select="marc:datafield[@tag='086'][marc:subfield/@code='a']" mode="display"/></xsl:if>
 				<xsl:if test="$pid!=''"> ; DIL:<xsl:value-of select="$pid"/></xsl:if>
-				<xsl:if test="$bibid!=''"> ; Voyager:<xsl:value-of select="$bibid"/></xsl:if>
+				<!--xsl:if test="$bibid!=''"> ; Voyager:<xsl:value-of select="$bibid"/></xsl:if-->
+				 ; Voyager:<xsl:value-of select="marc:controlfield[@tag='001']"/>
 			</vra:display>
-		    <xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='a']">
+		    <xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='a']
+		    	| marc:datafield[@tag='264' and @ind2='1']/marc:subfield[@code='a']">
 		        <vra:location type="creation">
 		        	<vra:name type="geographic">
 		        		<xsl:call-template name="displaySeparator"/>
@@ -335,6 +342,11 @@
 				<vra:location type="repository">
 					<xsl:apply-templates select="marc:subfield[@code='a' or @code='b' or @code='c']"/>
 				</vra:location>
+			</xsl:for-each>
+			<xsl:for-each select="marc:datafield[@tag='590']/marc:subfield[@code='a']">
+				<vra:location source="MARC 590"><vra:refid type="shelfList">
+					<xsl:value-of select="."/>
+				</vra:refid></vra:location>	
 			</xsl:for-each>
 
 			<xsl:if test="$pid!='' or $bibid!=''">
@@ -725,14 +737,14 @@
 	</xsl:template>
 	<!--Karen-->
 
-    <!-- Mike 1/24/2014 -->
+    <!-- Mike 1/24/2014; Hardcoded to "Prints" by Karen for Poster, 4/17/2014 -->
     <xsl:template name="addWorktypeSet">
 		<xsl:call-template name="comment">
 			<xsl:with-param name="comment">Work Type</xsl:with-param>
 		</xsl:call-template>
 		<vra:worktypeSet>
-			<vra:display/>
-			<vra:worktype/>
+			<vra:display>Prints</vra:display>
+			<vra:worktype>Prints</vra:worktype>
 		</vra:worktypeSet>
 	</xsl:template>
 	<!-- Mike -->
@@ -939,27 +951,34 @@
 <!--publication Date from 260$c or 264$c. Added by Karen 4/16/2014-->
 	<xsl:template name="publicationDate">
 		<xsl:param name="thisC"/>
-		<xsl:analyze-string select="$thisC" regex="\d\d\--\?">
-			<xsl:matching-substring>
-				<xsl:analyze-string select="." regex="\d\d">
+		
+		<xsl:choose>
+			<xsl:when test="contains($thisC,'-')">
+				<xsl:analyze-string select="$thisC" regex="\d\d\--\?*">
 					<xsl:matching-substring>
-						<xsl:value-of select="."/>00s</xsl:matching-substring>
+						<xsl:analyze-string select="." regex="\d\d">
+							<xsl:matching-substring><xsl:value-of select="."/>00s</xsl:matching-substring>
+						</xsl:analyze-string>
+					</xsl:matching-substring>
 				</xsl:analyze-string>
-			</xsl:matching-substring>
-		</xsl:analyze-string>
-		<xsl:analyze-string select="$thisC" regex="\d\d\d-\?">
-			<xsl:matching-substring>
-				<xsl:analyze-string select="." regex="\d\d\d">
+				<xsl:analyze-string select="$thisC" regex="\d\d\d-\?*">
 					<xsl:matching-substring>
-						<xsl:value-of select="."/>0s</xsl:matching-substring>
+						<xsl:analyze-string select="." regex="\d\d\d">
+							<xsl:matching-substring>
+								<xsl:value-of select="."/>0s</xsl:matching-substring>
+						</xsl:analyze-string>
+					</xsl:matching-substring>
 				</xsl:analyze-string>
-			</xsl:matching-substring>
-		</xsl:analyze-string>
-		<xsl:analyze-string select="$thisC" regex="\d{{4}}">
-			<xsl:matching-substring>
-				<xsl:value-of select="."/>
-			</xsl:matching-substring>
-		</xsl:analyze-string>
+				<xsl:analyze-string select="$thisC" regex="\d{{4}}">
+					<xsl:matching-substring>
+						<xsl:value-of select="."/>
+					</xsl:matching-substring>
+				</xsl:analyze-string>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="substring-before(substring-after($thisC,'['),']')"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:call-template name="displaySeparator"/>
 	</xsl:template>		
 
