@@ -938,11 +938,11 @@
 		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template match="marc:datafield[@tag='246'][marc:subfield/@code='i' or marc:subfield/@code='a']">
+	<xsl:template match="marc:datafield[@tag='246'][marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='i']">
 		<vra:title pref="false">
 			<xsl:call-template name="stripTrailingPeriod">
 				<xsl:with-param name="val">
-					<xsl:value-of select="marc:subfield[@code='i' or @code='a']"/>
+					<xsl:value-of select="marc:subfield[@code='i' or @code='a' or @code='b']"/>
 				</xsl:with-param>
 			</xsl:call-template>
 		</vra:title>
