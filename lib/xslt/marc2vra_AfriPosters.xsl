@@ -104,12 +104,17 @@
 					</xsl:for-each>
 					<!-- need to figure out 264 - maybe a choose statement with if/then/else Jen 04/08/2014 -->
 					<xsl:if test="marc:datafield[@tag='260']/marc:subfield[@code='b'] or marc:datafield[@tag='264']/marc:subfield[@code='b']">
-						<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='b']"> ; <xsl:analyze-string select="." regex="(,| :|\],)$">
+						<xsl:if test="marc:datafield[@tag='100' or @tag='110' or @tag='700' or @tag='710' or @tag='711']">
+								<xsl:text> ; </xsl:text>
+						</xsl:if>
+						<!-- need to figure out 264 - maybe a choose statement with if/then/else Jen 04/08/2014 -->
+						<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='b']"> 
+							<xsl:analyze-string select="." regex="(,| :|\],)$">
 								<xsl:non-matching-substring>
 									<xsl:value-of select="."/>
 								</xsl:non-matching-substring>
 							</xsl:analyze-string>
-						</xsl:for-each>				
+						</xsl:for-each>
 					</xsl:if>	
 				</vra:display>
 				<xsl:apply-templates
