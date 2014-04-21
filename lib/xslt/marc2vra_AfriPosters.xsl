@@ -981,7 +981,15 @@
 				</xsl:analyze-string>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="substring-before(substring-after($thisC,'['),']')"/>
+				<xsl:analyze-string select="substring-before(substring-after($thisC,'['),']')" regex="\d{{4}}\?*">
+					<xsl:matching-substring>
+						<xsl:analyze-string select="." regex="\d\d\d\d">
+							<xsl:matching-substring>
+								<xsl:value-of select="."/>
+							</xsl:matching-substring>
+						</xsl:analyze-string>
+					</xsl:matching-substring>
+				</xsl:analyze-string>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:call-template name="displaySeparator"/>
@@ -1425,7 +1433,7 @@
 			</xsl:non-matching-substring>
 		</xsl:analyze-string>
 	</xsl:template>
-
+	
 	<!--Added by Karen, April 1, 2014-->
 	<xsl:template name="countryCodes">
 		<xsl:param name="GAC"/>
