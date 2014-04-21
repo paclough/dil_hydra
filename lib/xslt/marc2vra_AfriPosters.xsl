@@ -623,14 +623,14 @@
 
 		<!-- ______________ Titles ______________ -->
 	    <!-- needs more work -BQ -->
-		<xsl:if test="marc:datafield[@tag='240' or @tag='245' or @tag='246' or @tag='130']">
+		<xsl:if test="marc:datafield[@tag='240' or @tag='245' or @tag='130']">
 			<xsl:call-template name="comment">
 				<xsl:with-param name="comment"> Titles </xsl:with-param>
 			</xsl:call-template>
 			<vra:titleSet>
 				<vra:display>
 					<xsl:for-each
-						select="marc:datafield[@tag='245'] | marc:datafield[@tag='246' and (@ind2='2' or @ind2='3')]">
+						select="marc:datafield[@tag='245']">
 						<xsl:call-template name="stripTrailingForwardSlash"/>
 						<xsl:call-template name="displaySeparator"/>
 						<xsl:apply-templates select="." mode="display"/>
