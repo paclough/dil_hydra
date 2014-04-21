@@ -127,7 +127,7 @@
 								<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='b']">
 									<xsl:choose>
 										<xsl:when test="normalize-space(.) = 's.n.,' or normalize-space(.) = 's.n.'">
-											<xsl:text>Publisher not identified</xsl:text>
+											<xsl:text>publisher not identified</xsl:text>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:call-template name="displaySeparator"/>
@@ -300,25 +300,26 @@
 		<vra:locationSet>
 			<vra:display>
 				<xsl:for-each
-				    select="marc:datafield[@tag='260']/marc:subfield[@code='a'] 
-				    | marc:datafield[@tag='264' and @ind2='1']/marc:subfield[@code='a'] 
+					select="marc:datafield[@tag='260']/marc:subfield[@code='a'][. != '[S.l.] :'][. != '[S.l. :'] 
+					| marc:datafield[@tag='264' and @ind2='1']/marc:subfield[@code='a'][. != '[S.l.] :'][. != '[S.l. :'] 
 				    | marc:datafield[@tag='752'][marc:subfield/@code!='g'] 
 				    | marc:datafield[@tag='535'][marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c'] 
 				    | marc:datafield[@tag='590']/marc:subfield[@code='a']">
-					<xsl:call-template name="displaySeparator"/>
-					<xsl:call-template name="stripBrackets">
-						<xsl:with-param name="val">
-							<xsl:apply-templates select="." mode="display"/>
-						</xsl:with-param>
-					</xsl:call-template>							
+						<xsl:call-template name="displaySeparator"/>
+						<xsl:call-template name="stripBrackets">
+							<xsl:with-param name="val">
+								<xsl:apply-templates select="." mode="display"/>
+							</xsl:with-param>
+						</xsl:call-template>			
 				</xsl:for-each>
 				<xsl:if test="marc:datafield[@tag='086'][marc:subfield/@code='a']"> ; U.S. Superintendent of Documents Classification number: <xsl:apply-templates select="marc:datafield[@tag='086'][marc:subfield/@code='a']" mode="display"/></xsl:if>
 				<xsl:if test="$pid!=''"> ; DIL:<xsl:value-of select="$pid"/></xsl:if>
 				<!--xsl:if test="$bibid!=''"> ; Voyager:<xsl:value-of select="$bibid"/></xsl:if-->
 				 ; Voyager:<xsl:value-of select="marc:controlfield[@tag='001']"/>
 			</vra:display>
-		    <xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='a']
-		    	| marc:datafield[@tag='264' and @ind2='1']/marc:subfield[@code='a']">
+			<xsl:for-each
+				select="marc:datafield[@tag='260']/marc:subfield[@code='a'][. != '[S.l.] :'][. != '[S.l. :'] 
+				| marc:datafield[@tag='264' and @ind2='1']/marc:subfield[@code='a'][. != '[S.l.] :'][. != '[S.l. :']">
 		        <vra:location type="creation">
 		        	<vra:name type="geographic">
 		        		<xsl:call-template name="displaySeparator"/>
@@ -1152,9 +1153,9 @@
     
     <!-- Publication, Distribution, etc -->
     <xsl:template match="marc:datafield[@tag='260']/marc:subfield[@code='a']">
-        <vra:name type="geographic">
-        	<xsl:value-of select="marc:datafield[@tag='260']/marc:subfield[@code='a']"/>
-        </vra:name>
+       	<vra:name type="geographic">
+       		<xsl:value-of select="marc:datafield[@tag='260']/marc:subfield[@code='a']"/>
+       	</vra:name>
     </xsl:template>
 
     <!-- physical description -->
