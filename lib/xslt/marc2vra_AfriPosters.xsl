@@ -125,12 +125,19 @@
 							<xsl:if test="marc:datafield[@tag='260']/marc:subfield[@code='b'] or marc:datafield[@tag='264']/marc:subfield[@code='b']">
 <!-- need to figure out the for-each to add 264 Jen 04/08/2014	-->
 								<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='b']">
-									<xsl:call-template name="displaySeparator"/>
-									<xsl:analyze-string select="." regex="(,| :|\],)$">
-										<xsl:non-matching-substring>
-											<xsl:value-of select="."/>
-										</xsl:non-matching-substring>
-									</xsl:analyze-string>
+									<xsl:choose>
+										<xsl:when test="normalize-space(.) = 's.n.,' or normalize-space(.) = 's.n.'">
+											<xsl:text>Publisher not identified</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:call-template name="displaySeparator"/>
+											<xsl:analyze-string select="." regex="(,| :|\],)$">
+												<xsl:non-matching-substring>
+													<xsl:value-of select="."/>
+												</xsl:non-matching-substring>
+											</xsl:analyze-string>
+										</xsl:otherwise>
+									</xsl:choose>
 								</xsl:for-each>
 							</xsl:if>
 						</vra:name>
