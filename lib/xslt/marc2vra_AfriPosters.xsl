@@ -439,8 +439,9 @@
 				| marc:datafield[@tag='830']/marc:subfield[@code='a' or @code='v'] 
 				| marc:datafield[@tag='800']/marc:subfield[@code='a' or @code='t' or @code='v']
 				| marc:datafield[@tag='730']/marc:subfield[@code='a']
-				| marc:datafield[@tag='700']/marc:subfield[@code='t' and (@code='a' or @code='b' or @code='c' or @code='e' or @code='j' or @code='q' or @code='l' or @code='v')]
-				| marc:datafield[@tag='710']/marc:subfield[@code='t'and (@code='a' or @code='b')]">
+				| marc:datafield[@tag='700']/marc:subfield[@code='t' and (@code='a' or @code='b' or @code='c' or @code='d' or @code='e' or @code='g'
+				or @code='j' or @code='q' or @code='l' or @code='v')]
+				| marc:datafield[@tag='710']/marc:subfield[@code='t'and (@code='a' or @code='b' or @code='c' or @code='d' or @code='e' or @code='g' or @code='n')]">
 					<xsl:call-template name="displaySeparator"/>
 					<xsl:call-template name="stripTrailingSemicolon">
 						<xsl:with-param name="val">
