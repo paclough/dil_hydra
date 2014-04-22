@@ -1013,15 +1013,7 @@
 				</xsl:analyze-string>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:analyze-string select="substring-before(substring-after($thisC,'['),']')" regex="\d{{4}}\?*">
-					<xsl:matching-substring>
-						<xsl:analyze-string select="." regex="\d\d\d\d">
-							<xsl:matching-substring>
-								<xsl:value-of select="."/>
-							</xsl:matching-substring>
-						</xsl:analyze-string>
-					</xsl:matching-substring>
-				</xsl:analyze-string>
+				<xsl:value-of select="substring-before(substring-after(translate($thisC,'?',''),'['),']')"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:call-template name="displaySeparator"/>
