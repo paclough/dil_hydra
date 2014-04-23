@@ -442,17 +442,20 @@
 		</xsl:variable>
 
 		<xsl:variable name="rel_title_wwii"><!--Karen added 800$atv, 730$a, and 700 and 710 if $t 4/16/2014--> 
-				<xsl:for-each select="marc:datafield[@tag='440']/marc:subfield[@code='a' or @code='v']
-				| marc:datafield[@tag='830']/marc:subfield[@code='a' or @code='v'] 
-				| marc:datafield[@tag='800']/marc:subfield[@code='a' or @code='t' or @code='v']
-				| marc:datafield[@tag='730']/marc:subfield[@code='a']
-				| marc:datafield[@tag='700']/marc:subfield[@code='t' and (@code='a' or @code='b' or @code='c' or @code='d' or @code='e' or @code='g'
-				or @code='j' or @code='q' or @code='l' or @code='v')]
-				| marc:datafield[@tag='710']/marc:subfield[@code='t'and (@code='a' or @code='b' or @code='c' or @code='d' or @code='e' or @code='g' or @code='n')]">
+				<xsl:for-each select="marc:datafield[@tag='440']
+				| marc:datafield[@tag='830'] 
+				| marc:datafield[@tag='800']
+				| marc:datafield[@tag='730']
+				| marc:datafield[@tag='700'][marc:subfield[@code='t']]
+				| marc:datafield[@tag='710'][marc:subfield[@code='t']]">
 					<xsl:call-template name="displaySeparator"/>
-					<xsl:call-template name="stripTrailingSemicolon">
+					<xsl:call-template name="stripTrailingPeriod">
 						<xsl:with-param name="val">
-							<xsl:value-of select="."/>
+							<xsl:for-each select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='q' or @code='d' or 
+								 @code='e' or @code='g' or @code='l' or @code='n' or @code='t' or @code='v']">
+										<xsl:if test="position()!=1"><xsl:text> </xsl:text></xsl:if>
+										<xsl:value-of select="."/>
+							</xsl:for-each>
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:for-each>
