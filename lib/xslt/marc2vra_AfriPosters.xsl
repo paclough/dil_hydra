@@ -568,7 +568,8 @@
 			</xsl:call-template>
 			<vra:subjectSet>
 				<vra:display>
-					<xsl:for-each select="marc:datafield[@tag='600'] | marc:datafield[@tag='610'] | marc:datafield[@tag='650'] | marc:datafield[@tag='611']
+					<xsl:for-each select="marc:datafield[@tag='600'] | marc:datafield[@tag='610'] | marc:datafield[@tag='650'] 
+						| marc:datafield[@tag='611'] | marc:datafield[@tag='630']
 						| marc:datafield[@tag='651'] | marc:datafield[@tag='653'] | marc:datafield[@tag='043']/marc:subfield[@code='a']">
 						<xsl:call-template name="displaySeparator"/>
 						<xsl:call-template name="stripTrailingPeriod">
