@@ -1240,14 +1240,29 @@
 						</xsl:choose>
 					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:for-each select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='q' or @code='d' or @code='n']">
+				<xsl:for-each select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='q' or @code='d' or @code='n' or @code='t']">
 					<xsl:if test="position()!=1"><xsl:text> </xsl:text></xsl:if>
-					<xsl:value-of select="."/>
+					<xsl:choose>
+						<xsl:when test="position()=last()">
+							<xsl:call-template name="stripTrailingPeriod">
+								<xsl:with-param name="val">
+									<xsl:value-of select="."></xsl:value-of>
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+								<xsl:value-of select="."></xsl:value-of>
+						</xsl:otherwise>
+						</xsl:choose>
+					
+					
+					
+					<!--xsl:value-of select="."></xsl:value-of-->
 				</xsl:for-each>
 			</vra:term>
 		</vra:subject>
 		
-		<xsl:for-each select="marc:subfield[@code='t' or @code='v']">
+		<xsl:for-each select="marc:subfield[@code='v']">
 			<vra:subject>
 				<vra:term>
 					<xsl:attribute name="type">otherTopic</xsl:attribute>
@@ -1288,49 +1303,7 @@
 		
 	</xsl:template>
 	
-	<!--reworked by Karen--><!--Puts whole subject term into one element--><!--
-	<xsl:template match="marc:datafield[@tag='600'] | marc:datafield[@tag='610'] | marc:datafield[@tag='611'] 
-		| marc:datafield[@tag='630'] | marc:datafield[@tag='650'] | marc:datafield[@tag='651'] | marc:datafield[@tag='653']">
-		<xsl:param name="subjectType"/>
-		<xsl:for-each select=".">
-			<vra:subject>
-				<vra:term>
-					<xsl:attribute name="type"><xsl:value-of select="$subjectType"/></xsl:attribute>
-					<xsl:apply-templates select="../marc:subfield[@code='2']"/>
-					<xsl:for-each select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='q' or @code='d' or @code='t' or @code='n']">
-						<xsl:if test="position()!=1"><xsl:text> </xsl:text></xsl:if>
-						<xsl:value-of select="."/>
-					</xsl:for-each>
-					<xsl:for-each select="marc:subfield[@code='x' or @code='y' or @code='v' or @code='z']">
-						<xsl:text>-</xsl:text>
-						<xsl:value-of select="."></xsl:value-of>
-					</xsl:for-each>
-				</vra:term>
-			</vra:subject>
-		</xsl:for-each>
-	</xsl:template>
--->	
-
-	<!-- location -->
-	<!--Commented out by Karen, 4/10/2014. This isn't in our current mapping-->
-	<!--
-	<xsl:template match="marc:datafield[@tag='650']">
-		<vra:location>
-			<vra:name>
-				<xsl:value-of
-					select="marc:subfield[@code='a' or @code='d' or @code='v' or @code='x' or @code='y' or @code='z']"
-				/>
-			</vra:name>
-		</vra:location>
-	</xsl:template>
-	<xsl:template match="marc:datafield[@tag='651']">
-		<vra:location>
-			<vra:name>
-				<xsl:value-of select="marc:subfield[@code='a']"/>
-			</vra:name>
-		</vra:location>
-	</xsl:template>
-	-->
+<!--Mapping of 650 into Location removed by Karen, 4/10/2014.-->
 
 <!-- removed 773 information, Jen 4/21/2014 -->
 	
