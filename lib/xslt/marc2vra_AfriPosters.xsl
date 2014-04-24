@@ -1024,7 +1024,7 @@
 				</xsl:analyze-string>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="substring-before(substring-after(translate($thisC,'?',''),'['),']')"/>
+				<xsl:value-of select="translate($thisC,'[]?.','')"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:call-template name="displaySeparator"/>
