@@ -322,13 +322,13 @@
 				<xsl:for-each
 					select="marc:datafield[@tag='260']/marc:subfield[@code='a'][. != '[S.l.] :'][. != '[S.l. :'] 
 					| marc:datafield[@tag='264' and @ind2='1']/marc:subfield[@code='a'][. != '[S.l.] :'][. != '[S.l. :'] 
-				    | marc:datafield[@tag='535'][marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c']">
+				    | marc:datafield[@tag='535']/marc:subfield[@code='a' or @code='b' or @code='c']">
 						<xsl:call-template name="displaySeparator"/>
 						<xsl:call-template name="stripBrackets">
 							<xsl:with-param name="val">
-								<xsl:apply-templates select="." mode="display"/>
+								<xsl:value-of select="translate(.,'[]','')"/>
 							</xsl:with-param>
-						</xsl:call-template>			
+						</xsl:call-template>
 				</xsl:for-each>
 				<xsl:for-each select="marc:datafield[@tag='590']/marc:subfield[@code='a']">
 					<xsl:text> ; </xsl:text>
