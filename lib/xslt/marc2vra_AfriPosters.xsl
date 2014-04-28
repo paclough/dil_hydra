@@ -324,7 +324,7 @@
 					| marc:datafield[@tag='264' and @ind2='1']/marc:subfield[@code='a'][. != '[S.l.] :'][. != '[S.l. :'] 
 				    | marc:datafield[@tag='535']/marc:subfield[@code='a' or @code='b' or @code='c']">
 						<xsl:call-template name="displaySeparator"/>
-						<xsl:value-of select="translate(.,'[]','')"/>
+						<xsl:value-of select="normalize-space(translate(.,'[]:?',''))"/>
 				</xsl:for-each>
 				<xsl:for-each select="marc:datafield[@tag='590']/marc:subfield[@code='a']">
 					<xsl:text> ; </xsl:text>
@@ -345,7 +345,7 @@
 		        <vra:location type="creation">
 		        	<vra:name type="geographic">
 		        		<xsl:call-template name="displaySeparator"/>
-		        		<xsl:value-of select="translate(.,'[]','')"/>
+		        		<xsl:value-of select="normalize-space(translate(.,'[]:?',''))"/>
 		        	</vra:name>
 		        </vra:location>
 		    </xsl:for-each>
