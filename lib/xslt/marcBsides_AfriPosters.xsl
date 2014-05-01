@@ -99,28 +99,53 @@
 					</xsl:attribute>
 					<xsl:element name="marc:subfield">
 						<xsl:attribute name="code">a</xsl:attribute>
-						<xsl:value-of select="marc:subfield[@code='a']"/>
+						<xsl:choose>
+							<xsl:when test="ends-with(marc:subfield[@code='a'], '/')">
+								<xsl:value-of select="normalize-space(substring-before(marc:subfield[@code='a'], '/'))"/>
+								<xsl:text>.</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="marc:subfield[@code='a']"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:element>
 					<xsl:if test="marc:subfield[@code='b']">
 						<xsl:element name="marc:subfield">
 							<xsl:attribute name="code">b</xsl:attribute>
-							<xsl:value-of select="marc:subfield[@code='b']"/>
+							<xsl:choose>
+								<xsl:when test="ends-with(marc:subfield[@code='b'], '/')">
+									<xsl:value-of select="normalize-space(substring-before(marc:subfield[@code='b'], '/'))"/>
+									<xsl:text>.</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="marc:subfield[@code='b']"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:element>
 					</xsl:if>
 					<xsl:element name="marc:subfield">
 						<xsl:attribute name="code">p</xsl:attribute>
-						<xsl:text>Verso.</xsl:text>
+						<xsl:text>Verso</xsl:text>
+						<xsl:choose>
+							<xsl:when test="marc:subfield[@code='c']">
+								<xsl:text> /</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>.</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:element>
 					<xsl:if test="marc:subfield[@code='c']">
 						<xsl:element name="marc:subfield">
 							<xsl:attribute name="code">c</xsl:attribute>
-							<xsl:value-of select="marc:subfield[@code='c']"/>
+								<xsl:value-of select="marc:subfield[@code='c']"/>
 						</xsl:element>
 					</xsl:if>
 				</xsl:element>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
 
 	<!--Note that this should only get called for the "B-Side" record, in the first choose condition for title processing-->
 	<xsl:template match="marc:datafield[marc:subfield[.='Title on poster verso:']]" mode="verso"/>
