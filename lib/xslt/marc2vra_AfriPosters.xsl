@@ -117,51 +117,10 @@
 					marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']"/>
 				<xsl:apply-templates
 					select="marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']"/>
-				
-				<xsl:if test="marc:datafield[@tag='260']/marc:subfield[@code='b'] or marc:datafield[@tag='264']/marc:subfield[@code='b']">
-					<vra:agent>
-						<vra:name type="corporate" vocab="lcnaf">
-							<xsl:if test="marc:datafield[@tag='710'][marc:subfield/@code='0']">
-								<xsl:attribute name="refid">
-									<xsl:value-of select="marc:datafield[@tag='710'][marc:subfield/@code='0']"/>
-								</xsl:attribute>							
-							</xsl:if>
-							<!-- Added 264 Jen 04/21/2014	-->
-							<xsl:if test="marc:datafield[@tag='260']/marc:subfield[@code='b'] or marc:datafield[@tag='264']/marc:subfield[@code='b']">
-								<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='b']">
-									<xsl:choose>
-										<xsl:when test="normalize-space(.) = 's.n.,' or normalize-space(.) = 's.n.'">
-											<xsl:text>publisher not identified</xsl:text>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:call-template name="displaySeparator"/>
-											<xsl:analyze-string select="." regex="(,| :|\],)$">
-												<xsl:non-matching-substring>
-													<xsl:value-of select="."/>
-												</xsl:non-matching-substring>
-											</xsl:analyze-string>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:for-each>
-								<xsl:for-each select="marc:datafield[@tag='264']/marc:subfield[@code='b']">
-									<xsl:choose>
-										<xsl:when test="normalize-space(.) = 's.n.,' or normalize-space(.) = 's.n.'">
-											<xsl:text>publisher not identified</xsl:text>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:call-template name="displaySeparator"/>
-											<xsl:analyze-string select="." regex="(,| :|\],)$">
-												<xsl:non-matching-substring>
-													<xsl:value-of select="."/>
-												</xsl:non-matching-substring>
-											</xsl:analyze-string>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:for-each>
-							</xsl:if>
-						</vra:name>
-					</vra:agent>
-				</xsl:if>
+				<xsl:apply-templates
+					select="marc:datafield[@tag='260'][marc:subfield/@code='b']"/>
+				<xsl:apply-templates
+					select="marc:datafield[@tag='264'][marc:subfield/@code='b']"/>
 			</vra:agentSet>
 		</xsl:if>
 		
@@ -907,23 +866,28 @@
 		</vra:agent>
 	</xsl:template>
 	
+	
 	<!-- Agent 260$b/264$b -->
 	<!-- 264 added by Jen 4/21/2014-->
-	<xsl:template match="marc:datafield[@tag='260' or @tag='264'][marc:subfield/@code='b']">
-		<vra:agent>
-			<vra:name type="corporate" vocab="lcnaf">
-				<xsl:if test="marc:datafield[@tag='710'][marc:subfield/@code='0']">
-					<xsl:attribute name="refid">
-						<xsl:value-of select="marc:datafield[@tag='710'][marc:subfield/@code='0']"/>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:call-template name="stripTrailingPeriod">
-					<xsl:with-param name="val">
-						<xsl:value-of select="marc:datafield[@tag='260' or @tag='264'][marc:subfield/@code='b']"/>
-					</xsl:with-param>
-				</xsl:call-template>		
-			</vra:name>
-		</vra:agent>
+	<xsl:template match="marc:datafield[@tag='260' or @tag='264']">
+		<xsl:for-each select="marc:subfield[@code='b']">
+			<vra:agent>
+				<vra:name type="corporate" vocab="lcnaf">
+					<xsl:choose>
+						<xsl:when test="normalize-space(translate(.,'[]','')) = 's.n.,' or normalize-space(translate(.,'[]','')) = 's.n.'">
+							<xsl:text>publisher not identified</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+						<xsl:call-template name="stripTrailingSemicolon">
+							<xsl:with-param name="val">
+								<xsl:value-of select="translate(.,'[]?,','')"/>
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
+				</vra:name>
+			</vra:agent>
+		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="marc:subfield[@code='0']">
@@ -1016,7 +980,14 @@
 				</xsl:analyze-string>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="translate($thisC,'[]?.','')"/>
+				<xsl:choose>
+					<xsl:when test="substring-after(translate($thisC,'[]?.',''),'c')">
+						<xsl:value-of select="substring-after(translate($thisC,'[]?.',''),'c')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="translate($thisC,'[]?.','')"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:call-template name="displaySeparator"/>
