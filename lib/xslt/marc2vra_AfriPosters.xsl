@@ -117,10 +117,11 @@
 					marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']"/>
 				<xsl:apply-templates
 					select="marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']"/>
-				<xsl:apply-templates
-					select="marc:datafield[@tag='260'][marc:subfield/@code='b']"/>
-				<xsl:apply-templates
-					select="marc:datafield[@tag='264'][marc:subfield/@code='b']"/>
+				<!--Team decision to remove Publisher from facets as well as from display field-->
+				<!--xsl:apply-templates
+					select="marc:datafield[@tag='260'][marc:subfield/@code='b']"/-->
+				<!--xsl:apply-templates
+					select="marc:datafield[@tag='264'][marc:subfield/@code='b']"/-->
 			</vra:agentSet>
 		</xsl:if>
 		
