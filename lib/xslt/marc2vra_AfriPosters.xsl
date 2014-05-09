@@ -75,14 +75,14 @@
 	<!-- Added 100e, 110e, 710e, 710cdne, 711 adcn, 264b Jen 04/08/2014 -->
 	<xsl:template name="marc2vra">
 		<!-- ______________ Agents ______________ -->
-		<xsl:if
+		<xsl:choose>
+			<xsl:when
 			test="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
 			or marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='e' or marc:subfield/@code='g'] 
 			or marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
 			or marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='n']
 			or marc:datafield[@tag='711'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='n']
-			or marc:datafield[@tag='260']/marc:subfield[@code='b']
-			or marc:datafield[@tag='264']/marc:subfield[@code='b']"	>
+			"	>
 			<xsl:call-template name="comment">
 				<xsl:with-param name="comment">Agents</xsl:with-param>
 			</xsl:call-template>
@@ -116,16 +116,23 @@
 					select="marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or 
 					marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']"/>
 				<xsl:apply-templates
-					select="marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']"/>
+					select="marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' 
+					or marc:subfield/@code='b' or marc:subfield/@code='g']"/>
+				<xsl:apply-templates
+					select="marc:datafield[@tag='711'][marc:subfield/@code='0' or marc:subfield/@code='a' 
+					or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='n' ]"/>
 				<!--Team decision to remove Publisher from facets as well as from display field-->
 				<!--xsl:apply-templates
 					select="marc:datafield[@tag='260'][marc:subfield/@code='b']"/-->
 				<!--xsl:apply-templates
 					select="marc:datafield[@tag='264'][marc:subfield/@code='b']"/-->
 			</vra:agentSet>
-		</xsl:if>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:call-template name="addEmptyAgentSet"/>
+		</xsl:otherwise>
+		</xsl:choose>
 		
-
 		<!-- added by Mike - 3/12/2012-->
 		<xsl:call-template name="addEmptyCulturalContextSet"/>
 		<!-- Mike -->
@@ -700,6 +707,18 @@
 	</xsl:template>
 	<!--Karen-->
 
+ 	<!-- Added by Jen, 5/9/2014 -->
+	<xsl:template name="addEmptyAgentSet">
+		<xsl:call-template name="comment">
+			<xsl:with-param name="comment">Agent</xsl:with-param>
+		</xsl:call-template>
+		<vra:agentSet>
+			<vra:display/>
+			<vra:agent/>
+		</vra:agentSet>
+	</xsl:template>
+	<!-- Jen -->
+	
     <!-- Mike 1/24/2014; Hardcoded to "Prints" by Karen for Poster, 4/17/2014 -->
     <xsl:template name="addWorktypeSet">
 		<xsl:call-template name="comment">
