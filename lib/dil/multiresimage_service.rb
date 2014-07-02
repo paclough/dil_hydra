@@ -58,8 +58,9 @@ module DIL
   			  elsif document.xpath("/vra:vra/vra:image").present?
     				#debugger
     				vra_type = "image"
-    				logger.debug("IMAGE")
+    				logger.debug("something")
     				#attempt to extract the pid by running xpath query
+            logger.debug "HI #{pid}"
     				if !pid.present?
     				  pid = document.xpath("/vra:vra/vra:image/@vra:refid", "vra"=>"http://www.vraweb.org/vracore4.htm").text
     				  if !pid.present?
@@ -71,11 +72,14 @@ module DIL
   			  #if no pid was in the xml, then create a new Fedora object
   			  if !pid.present?
   				  #mint a pid
-  				  pid = mint_pid()
+  				  pid = mint_pid( 'temp' )
+            logger.debug "HI #{pid}"
   				  #if pid was minted successfully
   				  if pid.present?
   				    if vra_type == "image"
   					    #create Fedora object for VRA Image, calls method in helper
+                logger.debug "HI #{pid}"
+                logger.debug "HI #{rel_pid}"
   					    returnXml = create_vra_image_fedora_object(pid, rel_pid, document, params[:collection])
   				    elsif vra_type == "work"
   					    #create Fedora object for VRA Work, calls method in helper
@@ -126,12 +130,15 @@ module DIL
       rescue Exception => e
         #error xml
         logger.error("Exception:" + e.message)
-        #logger.debug("PID:" + pid)
+        logger.debug("PID:" + pid)
         returnXml = "<response><returnCode>Error: The object was not saved.</returnCode><pid>" + pid + "</pid></response>"
       ensure #this will get called even if an exception was raised
         #respond to request with returnXml
-        respond_with returnXml do |format|
-          format.xml {render :layout => false, :xml => returnXml}
+        logger.debug "XML!!! #{returnXml}"
+        logger.debug "PID!!! #{pid}"
+        respond_to do |format|
+          logger.debug "HOLA!!!"
+          format.xml {render :layout => false, :xml => returnXml }
         end
       end # end exception handling
     end #end method
@@ -509,6 +516,7 @@ module DIL
     # If an exception occurs, the controller will catch it.
 
     def create_vra_image_fedora_object(pid, rel_pid, document, collection=nil)
+      logger.debug "HELLO!!!"
       logger.debug("create_image_method")
       # create new Fedora object with minted pid
       fedora_object = Multiresimage.new({:pid=>pid})
@@ -548,7 +556,7 @@ module DIL
       #save Fedora object
       fedora_object.save
       logger.debug("created image")
-
+      logger.debug "HELLO!!! AGAIN"
       "<response><returnCode>Save successful</returnCode><pid>" + pid + "</pid></response>"
     end
 
