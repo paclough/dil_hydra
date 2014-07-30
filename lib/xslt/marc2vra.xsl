@@ -14,7 +14,8 @@
 <xsl:output method="xml" omit-xml-declaration="no" indent="yes"  encoding = "utf-8"  media-type="text/xml"/>
 
 <xsl:template match="/">
-	<vra:vra xmlns:vra="http://www.vraweb.org/vracore4.htm" xsi:schemaLocation="http://www.vraweb.org/vracore4.htm http://www.vraweb.org/projects/vracore4/vra-4.0-restricted.xsd">
+	<vra:vra xmlns:vra="http://www.vraweb.org/vracore4.htm"
+		xsi:schemaLocation="http://www.vraweb.org/vracore4.htm http://www.loc.gov/standards/vracore/vra-strict.xsd">
 	<xsl:choose>
 		<xsl:when test="$work_or_image='image'">
 			<xsl:apply-templates select="//marc:record" mode="image"/>
