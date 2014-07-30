@@ -66,28 +66,52 @@
 
 
 <!-- Convert MARC to VRA without the enclosing vra:work or vra:item. These are provided by caller -->
+	<!-- Added subfields for 100, 110, 700, 710 and added 711 field JY 07/30/2014 -->
 <xsl:template name="marc2vra">
 	<!-- ______________ Agents ______________ -->
-	<xsl:if test="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
-			or marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g'] 
-			or marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
-			or marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']"> 
+	<xsl:if test="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' 
+		or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' 
+		or marc:subfield/@code='p' or marc:subfield/@code='q']
+		or marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='d' 
+		or marc:subfield/@code='g' or marc:subfield/@code='p'] 
+		or marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' 
+		or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' 
+		or marc:subfield/@code='p' or marc:subfield/@code='q' or marc:subfield/@code='r' or marc:subfield/@code='t' or marc:subfield/@code='x']
+		or marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='d'
+		or marc:subfield/@code='g' or marc:subfield/@code='p']
+		or marc:datafield[@tag='711'][marc:subfield/@code='a' or marc:subfield/@code='c' or marc:subfield/@code='d' or
+		marc:subfield/@code='g' or marc:subfield/@code='n']"> 
 		<xsl:call-template name="comment"><xsl:with-param name="comment">Agents</xsl:with-param></xsl:call-template>
 		<vra:agentSet>
 			<vra:display>
-			<xsl:for-each select="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
-			| marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g'] 
-			| marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']
-			| marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']">
+			<xsl:for-each select="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' 
+				or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j'
+				or marc:subfield/@code='p' or marc:subfield/@code='q']
+				| marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='d'
+				or marc:subfield/@code='g' or marc:subfield/@code='p'] 
+			| marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' 
+			or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='p'
+			or marc:subfield/@code='q' or marc:subfield/@code='r' or marc:subfield/@code='t' or marc:subfield/@code='x']
+			| marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='d'
+			or marc:subfield/@code='g' or marc:subfield/@code='p'] | marc:datafield[@tag='711'][marc:subfield/@code='a' or marc:subfield/@code='c' or marc:subfield/@code='d' or
+			marc:subfield/@code='g' or marc:subfield/@code='n']">
 				<!--xsl:if test="position()!=1">;</xsl:if-->
 				<xsl:if test="position()!=1"> ; </xsl:if>
 				<xsl:apply-templates select="." mode="display"/>
 			</xsl:for-each>
 			</vra:display>
-			<xsl:apply-templates select="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']"/>
-			<xsl:apply-templates select="marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']"/> 
-			<xsl:apply-templates select="marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='q']"/>
-			<xsl:apply-templates select="marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='g']"/>
+			<xsl:apply-templates select="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' 
+				or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j'
+				or marc:subfield/@code='p' or marc:subfield/@code='q']"/>
+			<xsl:apply-templates select="marc:datafield[@tag='110'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='d'
+				or marc:subfield/@code='g' or marc:subfield/@code='p']"/> 
+			<xsl:apply-templates select="marc:datafield[@tag='700'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='c' 
+				or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' or marc:subfield/@code='p'
+				or marc:subfield/@code='q' or marc:subfield/@code='r' or marc:subfield/@code='t' or marc:subfield/@code='x']"/>
+			<xsl:apply-templates select="marc:datafield[@tag='710'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' or marc:subfield/@code='d'
+				or marc:subfield/@code='g' or marc:subfield/@code='p']"/>
+			<xsl:apply-templates select="marc:datafield[@tag='711'][marc:subfield/@code='a' or marc:subfield/@code='c' or marc:subfield/@code='d' or
+				marc:subfield/@code='g' or marc:subfield/@code='n']"></xsl:apply-templates>
 		</vra:agentSet>
 	</xsl:if>
 	
