@@ -141,12 +141,13 @@
 	<xsl:call-template name="addEmptyCulturalContextSet"/>
 	<!-- Mike -->
 
+<!-- Removed 650/651 y from dateSet, Jen 07/30/2014 -->
 	<xsl:if test="marc:datafield[@tag='046']/marc:subfield[@code='s'] | marc:datafield[@tag='046']/marc:subfield[@code='t'] | marc:datafield[@tag='648']/marc:subfield[@code='s'] | marc:datafield[@tag='648']/marc:subfield[@code='t']
 		| marc:datafield[@tag='260']/marc:subfield[@code='c'] | marc:datafield[@tag='650']/marc:subfield[@code='y'] | marc:datafield[@tag='651']/marc:subfield[@code='y']">
 		<xsl:call-template name="comment"><xsl:with-param name="comment">Dates</xsl:with-param></xsl:call-template>
 		<vra:dateSet>
 			<vra:display>
-			<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='c']  | marc:datafield[@tag='650']/marc:subfield[@code='y']  | marc:datafield[@tag='651']/marc:subfield[@code='y']">
+			<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='c']">
 				<xsl:call-template name="displaySeparator"/>
 				<xsl:call-template name="stripTrailingPeriod"><xsl:with-param name="val"><xsl:value-of select="."/></xsl:with-param></xsl:call-template>
 			</xsl:for-each>
@@ -267,7 +268,7 @@
 		<vra:sourceSet>
 			<vra:display>
 			<xsl:for-each select="marc:datafield[@tag='773']/marc:subfield[@code='a' or @code='g']">
-				<!--xsl:call-template name="displaySeparator"/-->
+				<xsl:call-template name="displaySeparator"/>
 				<xsl:value-of select="."/>
 				<xsl:text> </xsl:text>
 			</xsl:for-each>
