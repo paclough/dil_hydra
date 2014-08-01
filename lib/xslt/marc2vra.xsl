@@ -478,7 +478,7 @@
 						<xsl:call-template name="stripTrailingPeriod">
 							<xsl:with-param name="val">
 								<xsl:for-each
-									select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='q' or @code='t' or @code='n']">
+									select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='d' or @code='q' or @code='t' or @code='n']">
 									<xsl:if test="position()!=1">
 										<xsl:text> </xsl:text>
 									</xsl:if>
@@ -1084,7 +1084,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:for-each
-					select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='q' or @code='p' 
+					select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='d' or @code='q' or @code='p' 
 					or @code='n' or @code='t']">
 					<xsl:if test="position()!=1">
 						<xsl:text> </xsl:text>
