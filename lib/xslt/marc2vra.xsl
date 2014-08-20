@@ -1,6 +1,6 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:marc="http://www.loc.gov/MARC21/slim"
-	xmlns:mods="http://www.loc.gov/mods/v3" xmlns:vra="http://www.vraweb.org/vracore4.htm"
+	xmlns:mods="http://www.loc.gov/mods/v3" xmlns:vra="http://www.loc.gov/standards/vracore/schemas.html"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<xsl:param name="bibid"/>
@@ -13,8 +13,8 @@
 		media-type="text/xml"/>
 
 	<xsl:template match="/">
-		<vra:vra xmlns:vra="http://www.vraweb.org/vracore4.htm"
-			xsi:schemaLocation="http://www.vraweb.org/vracore4.htm http://www.loc.gov/standards/vracore/vra-strict.xsd">
+		<vra:vra xmlns:vra="http://www.loc.gov/standards/vracore/schemas.html"
+			xsi:schemaLocation="http://www.loc.gov/standards/vracore/schemas.html http://www.loc.gov/standards/vracore/vra-strict.xsd">
 			<xsl:choose>
 				<xsl:when test="$work_or_image='image'">
 					<xsl:apply-templates select="//marc:record" mode="image"/>
@@ -170,7 +170,7 @@
 		<!-- Removed 650/651 y from dateSet, Jen 07/30/2014; removed 648, Jen 8/20/2014 -->
 		<xsl:if
 			test="marc:datafield[@tag='046']/marc:subfield[@code='s'] | marc:datafield[@tag='046']/marc:subfield[@code='t']
-		| marc:datafield[@tag='260']/marc:subfield[@code='c'] | marc:datafield[@tag='650']/marc:subfield[@code='y'] | marc:datafield[@tag='651']/marc:subfield[@code='y']">
+		| marc:datafield[@tag='260']/marc:subfield[@code='c']">
 			<xsl:call-template name="comment">
 				<xsl:with-param name="comment">Dates</xsl:with-param>
 			</xsl:call-template>
@@ -532,7 +532,7 @@
 		</vra:techniqueSet>
 	</xsl:template>
 	<!-- Mike -->
-
+<!-- TEMPLATE MATCHES BELOW, SETS ABOVE -->
 	<!-- agent display -->
 	<!-- added subfields, 711 Jen 7/30/2014 -->
 	<xsl:template match="marc:datafield[@tag='100']" mode="display">
@@ -670,7 +670,7 @@
 		If there are two dates (i.e., 1942-2006), the second one goes in latestDate. 
 		If there is only one date and it is preceded by text "d. " (i.e., d. 1956) then it goes in latestDate.
 		-->
-	<xsl:template match="marc:subfield[@code='d']" mode="agent">
+	<!--<xsl:template match="marc:subfield[@code='d']" mode="agent">-->
 		<!-- <vra:dates type="life">
 	<xsl:choose>
 	<xsl:when test="contains(.,'-')">
@@ -686,7 +686,7 @@
 	</xsl:choose>
 </vra:dates>
 -->
-	</xsl:template>
+	<!--</xsl:template>-->
 
 
 	<!-- titles -->
@@ -739,26 +739,26 @@
 	</xsl:template>-->
 
 
-	<!--<xsl:template match="marc:subfield[@code='s']" mode="earliestDate">
+	<xsl:template match="marc:subfield[@code='s']" mode="earliestDate">
 		<vra:earliestDate>
 			<xsl:value-of select="."/>
-		</vra:earliestDate>-->
-		<!--
-	<xsl:choose>
+		</vra:earliestDate>
+		
+	<!--<xsl:choose>
 		<xsl:when test="contains(.,'/')">
 			<vra:earliestDate><xsl:value-of select="substring-before(.,'/')"/></vra:earliestDate>
 		</xsl:when>
 		<xsl:otherwise>
 			<vra:earliestDate><xsl:value-of select="."/></vra:earliestDate>
 		</xsl:otherwise>
-	</xsl:choose>
--->
-	<!--</xsl:template>-->
+	</xsl:choose>-->
 
-	<!--<xsl:template match="marc:subfield[@code='t']" mode="latestDate">
+	</xsl:template>
+
+	<xsl:template match="marc:subfield[@code='t']" mode="latestDate">
 		<vra:latestDate>
 			<xsl:value-of select="."/>
-		</vra:latestDate>-->
+		</vra:latestDate>
 		<!--	<xsl:choose>
 		<xsl:when test="contains(.,'/')">
 			<vra:latestDate><xsl:value-of select="substring-after(.,'/')"/></vra:latestDate>
@@ -766,9 +766,9 @@
 		<xsl:otherwise>
 			<vra:latestDate><xsl:value-of select="."/></vra:latestDate>
 		</xsl:otherwise>
-	</xsl:choose>
--->
-	<!--</xsl:template>-->
+	</xsl:choose>-->
+
+	</xsl:template>
 
 	<!-- description -->
 	<xsl:template match="marc:datafield[@tag='500']/marc:subfield[@code='a']">
