@@ -82,9 +82,11 @@
 
 
 	<!-- Convert MARC to VRA without the enclosing vra:work or vra:item. These are provided by caller -->
-	<!-- Added subfields for 100, 110, 700, 710 and added 711 field Jen 07/30/2014 -->
+	
 	<xsl:template name="marc2vra">
+		
 		<!-- ______________ AGENTS ______________ -->
+		<!-- Added subfields for 100, 110, 700, 710 and added 711 field Jen 07/30/2014 -->
 		<xsl:if
 			test="marc:datafield[@tag='100'][marc:subfield/@code='0' or marc:subfield/@code='a' or marc:subfield/@code='b' 
 		or marc:subfield/@code='c' or marc:subfield/@code='d' or marc:subfield/@code='e' or marc:subfield/@code='g' or marc:subfield/@code='j' 
@@ -168,35 +170,10 @@
 
 		<!-- Removed 650/651 y from dateSet, Jen 07/30/2014; removed 648, Jen 8/20/2014; -->
 		<!-- Reworked to allow for missing 260 $c mapping to Unknown, Jen, 8/25/2014 -->
-					
-		<xsl:if
-			test="marc:datafield[@tag='046']/marc:subfield[@code='s'] | marc:datafield[@tag='046']/marc:subfield[@code='t']
-		| marc:datafield[@tag='260']/marc:subfield[@code='c']">
-			<xsl:call-template name="comment">
-				<xsl:with-param name="comment">Dates</xsl:with-param>
-			</xsl:call-template>
-			<vra:dateSet>
-				<vra:display>
-					<xsl:choose>
-						<xsl:when test="marc:datafield[@tag='260']/marc:subfield[@code='c']">				
-					<!--<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='c']">-->
-							<xsl:call-template name="displaySeparator"/>
-							<xsl:call-template name="stripTrailingPeriod">
-								<xsl:with-param name="val">
-									<xsl:value-of select="marc:datafield[@tag='260']/marc:subfield[@code='c']"/>
-									<!--<xsl:value-of select="."/>-->
-								</xsl:with-param>
-							 </xsl:call-template>						
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:text>Unknown</xsl:text>
-						</xsl:otherwise>
-					</xsl:choose>	
-				</vra:display>
-				<xsl:apply-templates select="marc:datafield[@tag='046']"/>
-			</vra:dateSet>
-		</xsl:if>
-	
+			
+		
+		<xsl:call-template name="dates"/>		
+		
 
 		<!-- ______________ DESCRIPTION ______________ -->
 		<xsl:if test="marc:datafield[@tag='500']/marc:subfield[@code='a']">
@@ -350,7 +327,7 @@
 		<xsl:choose>
 			<xsl:when test="$rel_title">
 				
-			<!-- CHANGE THIS BACK BEFORE TESTING ON CECIL comment out the text below -->	
+			<!-- CHANGE THIS BACK BEFORE TESTING ON CECIL uncomment out the text below -->	
 				
 			<!--<xsl:when test="$work_or_image='image' and $work_pid!=''">-->
 			<xsl:call-template name="comment">
@@ -691,15 +668,16 @@
 				<xsl:call-template name="stripTrailingPeriod">
 					<xsl:with-param name="val">
 						<xsl:value-of
-							select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='g' or @code='j' or @code='q']"
+							select="marc:subfield[@code='a' or @code='b' or @code='c' or @code='d' or @code='g' or @code='j' or @code='q']"
 						/>
 					</xsl:with-param>
 				</xsl:call-template>
 			</vra:name>
-			<xsl:apply-templates select="marc:subfield[@code='d']" mode="agent"/>
+			<!--<xsl:apply-templates select="marc:subfield[@code='d']" mode="agent"/>-->
 			<!-- added by Mike 3/12/2012-->
 			<xsl:if
-				test="//marc:datafield[@tag='046']/marc:subfield[@code='f'] | //marc:datafield[@tag='046']/marc:subfield[@code='g']">
+				test="//marc:datafield[@tag='046']/marc:subfield[@code='f']
+				| //marc:datafield[@tag='046']/marc:subfield[@code='g']">
 				<vra:dates type="life">
 					<xsl:apply-templates
 						select="//marc:datafield[@tag='046']/marc:subfield[@code='f']"/>
@@ -824,6 +802,75 @@
 			</xsl:call-template>
 		</vra:title>
 	</xsl:template>
+
+			
+	<!-- 260 $c DATE added by Jen 8/28/2014-->
+	<xsl:template name="dates">
+		<xsl:call-template name="comment">
+			<xsl:with-param name="comment">Dates</xsl:with-param>
+		</xsl:call-template>
+		<vra:dateSet>
+			<vra:display>
+				<xsl:choose>
+					<xsl:when test="marc:datafield[@tag='260'][marc:subfield/@code='c']">				
+						<!--<xsl:for-each select="marc:datafield[@tag='260']/marc:subfield[@code='c']">-->
+						<xsl:call-template name="publicationDate">
+							<xsl:with-param name="thisC">
+								<xsl:value-of
+									select="normalize-space(marc:datafield[@tag='260']/marc:subfield[@code='c'])"/>
+							</xsl:with-param>
+						</xsl:call-template>
+						<xsl:call-template name="displaySeparator"/>
+						<!--<xsl:call-template name="stripTrailingPeriod">
+							<xsl:with-param name="val">
+								<xsl:value-of select="."/>
+								<xsl:text>HELLO</xsl:text>
+							</xsl:with-param>
+						</xsl:call-template>	-->					
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Unknown</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>	
+			</vra:display>
+			<xsl:apply-templates select="marc:datafield[@tag='046']"/>
+		</vra:dateSet>
+	</xsl:template>
+	
+	
+	<xsl:template name="publicationDate">
+		<xsl:param name="thisC"/>
+		
+		<xsl:choose>
+			<xsl:when test="contains($thisC,'-')">
+				<xsl:analyze-string select="$thisC" regex="\d\d\--\?*">
+					<xsl:matching-substring>
+						<xsl:analyze-string select="." regex="\d\d">
+							<xsl:matching-substring><xsl:value-of select="."/>00s</xsl:matching-substring>
+						</xsl:analyze-string>
+					</xsl:matching-substring>
+				</xsl:analyze-string>
+				<xsl:analyze-string select="$thisC" regex="\d\d\d-\?*">
+					<xsl:matching-substring>
+						<xsl:analyze-string select="." regex="\d\d\d">
+							<xsl:matching-substring>
+								<xsl:value-of select="."/>0s</xsl:matching-substring>
+						</xsl:analyze-string>
+					</xsl:matching-substring>
+				</xsl:analyze-string>
+				<xsl:analyze-string select="$thisC" regex=" - ">
+					<xsl:matching-substring>
+						<xsl:value-of select="replace($thisC,' - ','-')"/>
+					</xsl:matching-substring>
+				</xsl:analyze-string>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="substring-before(substring-after(translate($thisC,'?',''),'['),']')"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:call-template name="displaySeparator"/>
+	</xsl:template>		
+
 
 	<!-- date 046$s, 046$t, 648$s, and 648$t; 648 information removed 8/20/2014 by Jen -->
 
@@ -1217,7 +1264,7 @@
 			<xsl:non-matching-substring>
 				<xsl:value-of select="$val"/>
 			</xsl:non-matching-substring>
-		</xsl:analyze-string>
+		</xsl:analyze-string>	
 	</xsl:template>
 
 
